@@ -6,7 +6,7 @@ import java.util.Random;
  */
 public class ScreenName {
   
-  String[] names = {
+  private String[] names = {
     "Alisa", 
     "Alvaro", 
     "Anna", 
@@ -19,16 +19,20 @@ public class ScreenName {
     "Marcel"
   };
 
-  public ScreenName () { }
+  public ScreenName() { }
 
+  /**
+   * Randomly returns a name from the names list 
+   * @return  a string name
+   */
   public String getName() {
-    return this.toString();
+    Random r = new Random();
+    int pick = r.nextInt(names.length - 1);
+    return names[pick];
   }
 
   @Override
   public String toString() {
-    Random r = new Random();
-    int pick = r.nextInt(names.length - 1);
-    return names[pick];
+    return this.getName();
   }
 }
