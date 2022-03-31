@@ -5,6 +5,7 @@
 public class GameCharacter {
   
   // character state
+  private String type = "Game Character";
   private String name = "Character";
   private int maxHealth = 0;
   private int currentHealth = 0;
@@ -18,6 +19,10 @@ public class GameCharacter {
   public GameCharacter() { }
 
   /** setters */
+
+  protected void setType(String type) {
+    this.type = type;
+  }
 
   /** 
    * Sets the name, ensuring the first character is a capital. 
@@ -52,6 +57,13 @@ public class GameCharacter {
   }
 
   /** getters */
+
+  /**
+   * @return  type as String
+   */
+  protected String getType() {
+    return this.type;
+  }
 
   /** 
    * @return  name as String
@@ -90,6 +102,19 @@ public class GameCharacter {
   }
 
   /** public */
+
+  /**
+   * Populates the monster attributes and prints a confirmation
+   * @param  name - monster name as String
+   * @param  maxHealth - maximum health as int
+   * @param  damage - damage value as int
+   */
+  public void create(String name, int maxHealth, int damage) {
+    this.setName(name);
+    this.setMaxHealth(maxHealth);
+    this.setDamage(damage);
+    System.out.printf("%s '%s' created.%n", this.getType(), this.getName());
+  }
 
   /** 
    * Receives a damage value and returns the value of currentHealth 
