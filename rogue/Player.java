@@ -8,13 +8,12 @@ public class Player extends GameCharacter {
   // player attributes
   private int level = 1;
 
-  public Player(String name) {
+  public Player() {
     // init GameCharacter
     super();
 
     // init Player
-    this.setName(name);
-    this.resetHealth();
+    this.setType("Player");
   }
 
   /** setters */
@@ -34,6 +33,19 @@ public class Player extends GameCharacter {
    */
   public int getLevel() {
     return this.level;
+  }
+
+  /** public */
+
+  /**
+   * Overloaded create method that takes only the name 
+   * and calculates the max health and damage for the player
+   * @param  name  player name as String
+   */
+  public void create(String name) {
+    int maxHealth = this.calculateMaxHealth();
+    int damage = this.calculateDamage();
+    this.create(name, maxHealth, damage);
   }
 
   /** private */
