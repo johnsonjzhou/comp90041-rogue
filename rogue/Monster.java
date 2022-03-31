@@ -6,7 +6,11 @@
 public class Monster extends GameCharacter {
 
   public Monster() {
+    // init GameCharacter
     super();
+
+    // init Monster
+    this.setType("Monster");
   }
 
   /** getter */
@@ -22,17 +26,4 @@ public class Monster extends GameCharacter {
 
   /** public */
 
-  /**
-   * Populates the monster attributes
-   * @param  name - monster name as String
-   * @param  maxHealth - maximum health as int
-   * @param  damage - damage value as int
-   * @return  Monster '[name]' created.
-   */
-  public String create(String name, int maxHealth, int damage) {
-    this.setName(name);
-    this.setMaxHealth(maxHealth);
-    this.setDamage(damage);
-    return String.format("Monster '%s' created.", this.getName());
-  }
 }
