@@ -19,6 +19,9 @@ public class Player extends GameCharacter {
 
   /** setters */
 
+  /**
+   * @param  level  player level as int
+   */
   public void setLevel(int level) {
     this.level = level;
     this.reset();
@@ -26,6 +29,9 @@ public class Player extends GameCharacter {
 
   /** getters */
 
+  /**
+   * @return  player level as int
+   */
   public int getLevel() {
     return this.level;
   }
