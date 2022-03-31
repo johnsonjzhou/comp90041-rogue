@@ -22,7 +22,7 @@ public class GameCharacter {
   /** 
    * Sets the name, ensuring the first character is a capital. 
    * If a name is not provided, a random name will be assigned. 
-   * @param  name - the game character name
+   * @param  name - the game character name as String
    */
   public void setName(String name) { 
     if (name.equals("")) {
@@ -43,26 +43,50 @@ public class GameCharacter {
     this.currentHealth = maxHealth;
   }
 
+  /**
+   * Sets the damage value
+   * @param  damage - the damage value as int
+   */
   public void setDamage(int damage) {
     this.damage = damage;
   }
 
   /** getters */
 
+  /** 
+   * @return  name as String
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * @return  maxHealth as int
+   */
   public int getMaxHealth() {
     return this.maxHealth;
   }
 
+  /**
+   * @return  currentHealth as int
+   */
   public int getCurrentHealth() {
     return this.currentHealth;
   }
 
+  /**
+   * @return  damage value as int
+   */
   public int getDamage() {
     return this.damage;
+  }
+
+  /**
+   * @return  the first letter of the name in upper case
+   */
+  public char getMapMarker() {
+    char marker = this.name.charAt(0);
+    return Character.toUpperCase(marker);
   }
 
   /** public */
@@ -80,7 +104,7 @@ public class GameCharacter {
 
   /**
    * Attacks the foe by dealing it damage
-   * @param  GameCharacter - another game character as the foe
+   * @param  foe - another game character as the foe
    * @return  true if killed the foe || false if foe lives
    */
   public boolean attacks(GameCharacter foe) {
