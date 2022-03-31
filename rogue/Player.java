@@ -23,7 +23,7 @@ public class Player extends GameCharacter {
    */
   public void setLevel(int level) {
     this.level = level;
-    this.resetHealth();
+    this.resetAttributes();
   }
 
   /** getters */
@@ -71,7 +71,7 @@ public class Player extends GameCharacter {
   /**
    * Resets the player maxHealth, currentHealth and damage
    */
-  public void resetHealth() {
+  public void resetAttributes() {
     this.setMaxHealth(this.calculateMaxHealth());
     this.setDamage(this.calculateDamage());
   }
