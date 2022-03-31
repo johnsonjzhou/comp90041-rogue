@@ -70,12 +70,12 @@ public class Player extends GameCharacter {
    * Damage: 2
    * Health: 20/20
    */
+  @Override
   public void displayCharacterInfo() {
     System.out.printf("%s (Lv. %d)%n", this.getName(), this.level);
     System.out.printf("Damage: %d%n", this.getDamage());
     System.out.printf("Health: %d/%d%n", 
       this.getCurrentHealth(), this.getMaxHealth()
     );
-
   }
 }

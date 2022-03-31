@@ -112,6 +112,20 @@ public class GameCharacter {
     return (foeHealth <= 0);
   }
 
+  /**
+   * Prints the player stats to the system in the following format
+   * Name
+   * Damage: 2
+   * Health: 20/20
+   */
+  public void displayCharacterInfo() {
+    System.out.printf("%s%n", this.getName());
+    System.out.printf("Damage: %d%n", this.getDamage());
+    System.out.printf("Health: %d/%d%n", 
+      this.getCurrentHealth(), this.getMaxHealth()
+    );
+  }
+
   /** overrides */
 
   @Override
