@@ -12,7 +12,6 @@ public class GameCharacter {
   private int damage = 0;
 
   // character position
-  // ? should this be in character or map
   private int posX = 0;
   private int posY = 0;
 
@@ -54,6 +53,20 @@ public class GameCharacter {
    */
   public void setDamage(int damage) {
     this.damage = damage;
+  }
+
+  /**
+   * @param  x - x coordinate as int
+   */
+  public void setX(int x) {
+    this.posX = x;
+  }
+
+  /**
+   * @param  y - y coordinate as int
+   */
+  public void setY(int y) {
+    this.posY = y;
   }
 
   /** getters */
@@ -116,6 +129,20 @@ public class GameCharacter {
    */
   public boolean getAlive() {
     return (this.currentHealth > 0);
+  }
+
+  /**
+   * @return  x coordinate as int
+   */
+  public int getX() {
+    return this.posX;
+  }
+
+  /**
+   * @return  y coordinate as int
+   */
+  public int getY() {
+    return this.posY;
   }
 
   /** public */
