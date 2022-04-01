@@ -101,6 +101,15 @@ public class GameCharacter {
     return Character.toUpperCase(marker);
   }
 
+  /**
+   * Returns the character name and health stats 
+   * by invoking the toString method
+   * @return  Bilbo 18/20
+   */
+  public String getStats() {
+    return this.toString();
+  }
+
   /** public */
 
   /**
