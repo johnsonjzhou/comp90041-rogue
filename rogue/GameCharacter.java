@@ -110,6 +110,14 @@ public class GameCharacter {
     return this.toString();
   }
 
+  /**
+   * Returns whether the current health is above 0
+   * @return  true for alive | false for dead
+   */
+  public boolean getAlive() {
+    return (this.currentHealth > 0);
+  }
+
   /** public */
 
   /**
@@ -137,12 +145,19 @@ public class GameCharacter {
   }
 
   /**
-   * Attacks the foe by dealing it damage
+   * Attacks the foe by dealing it damage and 
+   * optionally output the attack to the screen
    * @param  foe - another game character as the foe
+   * @param  output - whether to output the attack to the screen
    * @return  true if killed the foe || false if foe lives
    */
-  public boolean attacks(GameCharacter foe) {
+  public boolean attacks(GameCharacter foe, boolean output) {
     int foeHealth = foe.receiveDamage(this.getDamage());
+    if (output) {
+      System.out.printf("%s attacks %s for %d damage.%n",
+        this.getName(), foe.getName(), this.getDamage()
+      );
+    }
     return (foeHealth <= 0);
   }
 
