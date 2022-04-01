@@ -10,7 +10,10 @@ public class Battle {
   private GameCharacter winner;
   private boolean inCombat;
 
-
+  /**
+   * @param  attacker - as a GameCharacter object
+   * @param  defender - as a GameCharacter object
+   */
   public Battle(GameCharacter attacker, GameCharacter defender) {
     this.attacker = attacker;
     this.defender = defender;
