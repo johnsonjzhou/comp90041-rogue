@@ -18,9 +18,6 @@ public class Battle {
     this.attacker = attacker;
     this.defender = defender;
     this.inCombat = true;
-    System.out.printf("%s encountered a %s!%n%n", 
-      this.attacker.getName(), this.defender.getName()
-    );
   }
 
   /** setters */
@@ -43,6 +40,16 @@ public class Battle {
   }
 
   /** public */
+
+  /**
+   * Outputs a message announcing the battle participants.
+   * Bilbo encountered a Slimy!
+   */
+  public void announce() {
+    System.out.printf("%s encountered a %s!%n%n", 
+      this.attacker.getName(), this.defender.getName()
+    );
+  }
   
   /**
    * Initiates the battle loop. 
