@@ -42,6 +42,7 @@ public class GameEngine {
   public static final String MENU_CMD_START = "start";
   public static final String MENU_CMD_EXIT = "exit";
 
+  private World world;
   private Player player;
   // ?: there may be more than one monster in the future
   private ArrayList<Monster> monsters;
@@ -62,6 +63,10 @@ public class GameEngine {
 
     // initiate monsters list
     this.monsters = new ArrayList<Monster>();
+
+    // initiate World and attach the user console
+    this.world = new World();
+    this.world.setConsole(this.console);
   }
 
   /** private */
@@ -101,6 +106,7 @@ public class GameEngine {
 
           case GameEngine.MENU_CMD_START:
             this.startGame();
+            this.console.waitUserEnter();
             break commandLoop;
 
           case GameEngine.MENU_CMD_EXIT:
@@ -190,12 +196,18 @@ public class GameEngine {
     }
   }
 
+  /**
+   * Displays character info for the player
+   */
   private void displayPlayer() {
     if (this.player != null) {
       this.player.displayCharacterInfo();
     }
   }
 
+  /**
+   * If a player does not exist, create a new player
+   */
   private void createPlayer() {
     if (this.player != null) {
       this.displayPlayer();
@@ -207,9 +219,13 @@ public class GameEngine {
     this.player.create(name);
   }
 
+  /**
+   * Create a new monster
+   */
   private void createMonster() {
     // handle monster quantity
     // there is only one monster in this version
+    // ?: this behaviour may change in future versions
     if (this.monsters.size() >= 0) {
       this.monsters.clear();
     }
@@ -227,6 +243,44 @@ public class GameEngine {
   }
 
   private void startGame() {
-    //todo
+    // handle player not created
+    if (this.player == null) {
+      System.out.println(GameEngine.NO_PLAYER_MSG);
+      return;
+    }
+
+    // handle monster not created
+    if (this.monsters == null || this.monsters.size() <= 0) {
+      System.out.println(GameEngine.NO_MONSTER_MSG);
+      return;
+    }
+
+    // restore player health and add to the world
+    if (this.player != null) {
+      this.player.restoreHealth();
+      this.world.setPlayer(this.player);
+    }
+
+    // restore monster health and add to the world
+    for (Monster monster : this.monsters) {
+      monster.restoreHealth();
+    }
+    this.world.setMonster(this.monsters);
+
+    // start the world engine
+    // initiate a battle if a player-monster collision is thrown within the world
+    // catch if the world is not ready (player, monsters or console not set)
+    // catch additional exceptions if they arise
+    try {
+      world.start();
+    } catch (CharacterCollision c) {
+      Battle battle = c.getBattle();
+      battle.announce();
+      battle.begin();
+    } catch (WorldNotReady e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      System.out.println(GameEngine.GEN_ERROR_MSG);
+    }
   }
 }
