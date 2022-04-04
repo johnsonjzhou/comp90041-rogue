@@ -98,6 +98,7 @@ public class UserConsole {
       System.out.println();
       this.printMessage(GameEngine.WAIT_ENTER_KEY_MSG);
       this.stdin.nextLine();
+      System.out.println();
     } catch (Exception e) { }
     return false;
   }
