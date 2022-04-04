@@ -65,22 +65,27 @@ public class World {
   private void renderMap() {
     for (int row = 0; row < this.mapHeight; row++) {
       for (int col = 0; col < this.mapWidth; col++) {
-        char output = '.';
+        // default map marker
+        char marker = '.';
+
         // check if position matches the player
         if (
           this.player != null & 
           col == this.player.getX() && row == this.player.getY()
         ) {
-          output = this.player.getMapMarker();
+          marker = this.player.getMapMarker();
         }
 
         // check if position matches any of the monsters
+        // ! if multiple monsters, the most recently created will be shown
         for (Monster monster : this.monsters) {
           if (col == monster.getX() && row == monster.getY()) {
-            output = monster.getMapMarker();
+            marker = monster.getMapMarker();
           }
-          System.out.print(output);
         }
+        
+        // display the marker
+        System.out.print(marker);
       }
       System.out.printf("%n");
     }
@@ -105,6 +110,7 @@ public class World {
 
   /**
    * Checks whether player and monster has collided
+   * ! if colliding multiple monsters, the first created monster is returned
    * @return  -1 no collision | index of coliding monster
    */
   private int checkCollision() {
