@@ -9,9 +9,6 @@ import java.lang.NullPointerException;
 
 public class UserConsole {
 
-  public static final String INVALID_INPUT_MSG = "Invalid input, please try again";
-  public static final String WAIT_ENTER_KEY_MSG = "Press enter key to return to main menu";
-
   private Scanner stdin;
 
   public UserConsole() {
@@ -93,13 +90,13 @@ public class UserConsole {
   }
 
   public int readInt() {
-    return this.readInt(UserConsole.INVALID_INPUT_MSG);
+    return this.readInt(GameEngine.INVALID_INPUT_MSG);
   }
 
   public boolean waitUserEnter() {
     try {
       System.out.println();
-      this.printMessage(UserConsole.WAIT_ENTER_KEY_MSG);
+      this.printMessage(GameEngine.WAIT_ENTER_KEY_MSG);
       this.stdin.nextLine();
     } catch (Exception e) { }
     return false;
