@@ -86,7 +86,7 @@ public class UserConsole {
         if (input.equals("exit")) {
           break convert;
         }
-        continue;
+        continue convert;
       }
     }
     return output;
