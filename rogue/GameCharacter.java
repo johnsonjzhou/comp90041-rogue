@@ -189,6 +189,13 @@ public class GameCharacter {
   }
 
   /**
+   * Restores the currentHealth to the maxHealth value
+   */
+  public void restoreHealth() {
+    this.currentHealth = this.maxHealth;
+  }
+
+  /**
    * Prints the player stats to the system in the following format
    * Name
    * Damage: 2
