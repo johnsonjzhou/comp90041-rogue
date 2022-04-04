@@ -4,6 +4,7 @@
  *
  */
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class GameEngine {
 
@@ -41,9 +42,9 @@ public class GameEngine {
   public static final String MENU_CMD_START = "start";
   public static final String MENU_CMD_EXIT = "exit";
 
-  private GameCharacter player;
+  private Player player;
   // ?: there may be more than one monster in the future
-  private GameCharacter[] monsters;
+  private ArrayList<Monster> monsters;
   private UserConsole console;
   
   public static void main(String[] args) {
@@ -58,6 +59,9 @@ public class GameEngine {
   public GameEngine() {
     // Creates an instance of UserConsole to receive user inputs
     this.console = new UserConsole();
+
+    // initiate monsters list
+    this.monsters = new ArrayList<Monster>();
   }
 
   /** private */
@@ -86,11 +90,7 @@ public class GameEngine {
             continue commandLoop;
 
           case GameEngine.MENU_CMD_PLAYER:
-            if (this.player == null) {
-              this.createPlayer();
-            } else {
-              this.displayPlayer();
-            }
+            this.createPlayer();
             this.console.waitUserEnter();
             break commandLoop;
 
@@ -150,9 +150,10 @@ public class GameEngine {
     System.out.printf("Player: %s  | Monster: %s%n", 
       this.player == null ? 
         GameEngine.NULL_CHARACTER_MSG : this.player.getStats(), 
-      this.monsters == null ? 
+      this.monsters.size() == 0 ? 
         GameEngine.NULL_CHARACTER_MSG : 
-        this.monsters[(this.monsters.length - 1)].getStats()
+        // display the most recently created monster
+        this.monsters.get(this.monsters.size() - 1).getStats() 
     );
   }
 
@@ -190,15 +191,39 @@ public class GameEngine {
   }
 
   private void displayPlayer() {
-    //todo
+    if (this.player != null) {
+      this.player.displayCharacterInfo();
+    }
   }
 
   private void createPlayer() {
-    //todo
+    if (this.player != null) {
+      this.displayPlayer();
+      return;
+    }
+    this.player = new Player();
+    System.out.println("What is your character's name?");
+    String name = this.console.readNext();
+    this.player.create(name);
   }
 
   private void createMonster() {
-    //todo
+    // handle monster quantity
+    // there is only one monster in this version
+    if (this.monsters.size() >= 0) {
+      this.monsters.clear();
+    }
+
+    // create a new monster and add it to the monsters list
+    Monster newMonster = new Monster();
+    System.out.print("Monster name: ");
+    String name = this.console.readNext();
+    System.out.print("Monster health: ");
+    int maxHealth = this.console.readInt();
+    System.out.print("Monster damage: ");
+    int damage = this.console.readInt();
+    newMonster.create(name, maxHealth, damage);
+    this.monsters.add(newMonster);
   }
 
   private void startGame() {
