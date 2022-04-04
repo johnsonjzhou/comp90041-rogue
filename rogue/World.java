@@ -125,7 +125,7 @@ public class World {
           newX +=1;
           break;
         case "home":
-          System.out.println("Returning home...");
+          System.out.println(GameEngine.RETURN_HOME_MSG);
           break moving;
         default:
           continue moving;
@@ -155,19 +155,15 @@ public class World {
    */
   public void start() throws WorldNotReady, CharacterCollision {
     if (this.console == null) {
-      throw new WorldNotReady("Darn something unexpected happened...");
+      throw new WorldNotReady(GameEngine.GEN_ERROR_MSG);
     }
 
     if (this.player == null) {
-      throw new WorldNotReady(
-        "No player found, please create a player with 'player' first."
-      );
+      throw new WorldNotReady(GameEngine.NO_PLAYER_MSG);
     }
 
     if (this.monster == null) {
-      throw new WorldNotReady(
-        "No monster found, please create a monster with 'monster' first."
-      );
+      throw new WorldNotReady(GameEngine.NO_MONSTER_MSG);
     }
 
     // reset the player positions
