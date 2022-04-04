@@ -36,6 +36,23 @@ Player: Bilbo 20/20  | Monster: [None]
 Please enter a command to continue.
 Type 'help' to learn how to get started.
 
+> Bilbo (Lv. 1)
+Damage: 2
+Health: 20/20
+
+(Press enter key to return to main menu)
+ ____                        
+|  _ \ ___   __ _ _   _  ___ 
+| |_) / _ \ / _` | | | |/ _ \
+|  _ < (_) | (_| | |_| |  __/
+|_| \_\___/ \__, |\__,_|\___|
+COMP90041   |___/ Assignment 
+
+Player: Bilbo 20/20  | Monster: [None]
+
+Please enter a command to continue.
+Type 'help' to learn how to get started.
+
 > Monster name: Monster health: Monster damage: Monster 'Slime' created.
 
 (Press enter key to return to main menu)
@@ -51,16 +68,19 @@ Player: Bilbo 20/20  | Monster: Slime 10/10
 Please enter a command to continue.
 Type 'help' to learn how to get started.
 
-> Type 'commands' to list all available commands
-Type 'start' to start a new game
-Create a character, battle monsters, and find treasure!
+> Monster name: Monster health: Monster damage: Monster 'Orc' created.
 
-> Type 'commands' to list all available commands
-Type 'start' to start a new game
-Create a character, battle monsters, and find treasure!
+(Press enter key to return to main menu)
+ ____                        
+|  _ \ ___   __ _ _   _  ___ 
+| |_) / _ \ / _` | | | |/ _ \
+|  _ < (_) | (_| | |_| |  __/
+|_| \_\___/ \__, |\__,_|\___|
+COMP90041   |___/ Assignment 
 
-> Type 'commands' to list all available commands
-Type 'start' to start a new game
-Create a character, battle monsters, and find treasure!
+Player: Bilbo 20/20  | Monster: Orc 15/15
+
+Please enter a command to continue.
+Type 'help' to learn how to get started.
 
 > Thank you for playing Rogue!
