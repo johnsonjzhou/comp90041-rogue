@@ -235,9 +235,9 @@ public class GameEngine {
     System.out.print("Monster name: ");
     String name = this.console.readNext();
     System.out.print("Monster health: ");
-    int maxHealth = this.console.readInt();
+    int maxHealth = this.console.readInt(GameEngine.INT_INPUT_MSG);
     System.out.print("Monster damage: ");
-    int damage = this.console.readInt();
+    int damage = this.console.readInt(GameEngine.INT_INPUT_MSG);
     newMonster.create(name, maxHealth, damage);
     this.monsters.add(newMonster);
   }
