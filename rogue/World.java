@@ -154,12 +154,20 @@ public class World {
    * @return  false if not ready
    */
   public void start() throws WorldNotReady, CharacterCollision {
-    if (
-      this.player == null || 
-      this.monster == null || 
-      this.console == null
-    ) {
-      throw new WorldNotReady();
+    if (this.console == null) {
+      throw new WorldNotReady("Darn something unexpected happened...");
+    }
+
+    if (this.player == null) {
+      throw new WorldNotReady(
+        "No player found, please create a player with 'player' first."
+      );
+    }
+
+    if (this.monster == null) {
+      throw new WorldNotReady(
+        "No monster found, please create a monster with 'monster' first."
+      );
     }
 
     // reset the player positions
@@ -178,8 +186,15 @@ public class World {
 /** thrown exceptions */
 
 class WorldNotReady extends Exception {
-  public WorldNotReady() {
-    super("World engine not ready");
+  public WorldNotReady(String message) {
+    super(message);
+  }
+
+  /**
+   * Outputs the message to the screen
+   */
+  public void announce() {
+    System.out.println(this.getMessage());
   }
 }
 
