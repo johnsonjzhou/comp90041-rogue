@@ -1,10 +1,10 @@
-import java.io.Console;
-
 /**
  * The Rogue world map.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  *
  */
+import java.util.ArrayList;
+
 public class World {
 
   public static final int DEFAULT_HEIGHT = 4;
@@ -14,8 +14,8 @@ public class World {
   public static final int MONSTER_START_X = 4;
   public static final int MONSTER_START_Y = 2;
 
-  private GameCharacter player;
-  private GameCharacter monster;
+  private Player player;
+  private ArrayList<Monster> monsters;
   private int mapHeight;
   private int mapWidth;
   private UserConsole console;
@@ -33,17 +33,17 @@ public class World {
   /** setters */
 
   /**
-   * @param  player - the player as GameCharacter
+   * @param  player - the player as Player
    */
-  public void setPlayer(GameCharacter player) {
+  public void setPlayer(Player player) {
     this.player = player;
   }
 
   /**
-   * @param  monster - the monster as GameCharacter
+   * @param  monster - the monster as ArrayList<Monster>
    */
-  public void setMonster(GameCharacter monster) {
-    this.monster = monster;
+  public void setMonster(ArrayList<Monster> monsters) {
+    this.monsters = monsters;
   }
 
   /**
@@ -63,17 +63,24 @@ public class World {
    * ......
    */
   private void renderMap() {
-    if (this.player == null || this.monster == null) { return; }
     for (int row = 0; row < this.mapHeight; row++) {
       for (int col = 0; col < this.mapWidth; col++) {
         char output = '.';
-        if (col == this.player.getX() && row == this.player.getY()) {
+        // check if position matches the player
+        if (
+          this.player != null & 
+          col == this.player.getX() && row == this.player.getY()
+        ) {
           output = this.player.getMapMarker();
         }
-        if (col == this.monster.getX() && row == this.monster.getY()) {
-          output = this.monster.getMapMarker();
+
+        // check if position matches any of the monsters
+        for (Monster monster : this.monsters) {
+          if (col == monster.getX() && row == monster.getY()) {
+            output = monster.getMapMarker();
+          }
+          System.out.print(output);
         }
-        System.out.print(output);
       }
       System.out.printf("%n");
     }
@@ -81,27 +88,35 @@ public class World {
 
   /**
    * Resets the player and monster locations to default
+   * ! ALERT, if multiple monsters, they all start at the same location
+   * ! take care for future scope
    */
   private void reset() {
     if (this.player != null) { 
       this.player.setX(World.PLAYER_START_X);
       this.player.setY(World.PLAYER_START_Y);
     }
-    if (this.monster != null) {
-      this.monster.setX(World.MONSTER_START_X);
-      this.monster.setY(World.MONSTER_START_Y);
+
+    for (Monster monster : this.monsters) {
+      monster.setX(World.MONSTER_START_X);
+      monster.setY(World.MONSTER_START_Y);
     }
   }
 
   /**
    * Checks whether player and monster has collided
-   * @return  true if collision | false if not
+   * @return  -1 no collision | index of coliding monster
    */
-  private boolean checkCollision() {
-    return (
-      this.player.getX() == this.monster.getX() && 
-      this.player.getY() == this.monster.getY()
-    );
+  private int checkCollision() {
+    for (Monster monster : this.monsters) {
+      if (
+        this.player.getX() == monster.getX() && 
+        this.player.getY() == monster.getY()
+      ) {
+        return this.monsters.indexOf(monster);
+      }
+    }
+    return -1;
   }
 
   private void movementLoop() throws CharacterCollision{
@@ -138,8 +153,11 @@ public class World {
         this.player.setY(newY);
       }
 
-      if (this.checkCollision()) {
-        throw new CharacterCollision(new Battle(this.player, this.monster));
+      int monsterCollision = this.checkCollision();
+      if (monsterCollision >= 0) {
+        throw new CharacterCollision(
+          new Battle(this.player, this.monsters.get(monsterCollision))
+        );
       }
     }
   }
@@ -162,7 +180,7 @@ public class World {
       throw new WorldNotReady(GameEngine.NO_PLAYER_MSG);
     }
 
-    if (this.monster == null) {
+    if (this.monsters == null || this.monsters.size() <= 0) {
       throw new WorldNotReady(GameEngine.NO_MONSTER_MSG);
     }
 
