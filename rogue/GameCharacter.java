@@ -2,7 +2,7 @@
  * Base attributes for a Game Character in Rogue.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public class GameCharacter extends Entity {
+public abstract class GameCharacter extends Entity {
   
   // character state
   private String type = "Game Character";
@@ -10,10 +10,6 @@ public class GameCharacter extends Entity {
   private int maxHealth = 0;
   private int currentHealth = 0;
   private int damage = 0;
-
-  // character position
-  private int posX = 0;
-  private int posY = 0;
 
   public GameCharacter() { }
 
@@ -93,14 +89,6 @@ public class GameCharacter extends Entity {
   }
 
   /**
-   * @return  the first letter of the name in upper case
-   */
-  public char getMapMarker() {
-    char marker = this.name.charAt(0);
-    return Character.toUpperCase(marker);
-  }
-
-  /**
    * Returns the character name and health stats 
    * by invoking the toString method
    * @return  Bilbo 18/20
@@ -167,19 +155,9 @@ public class GameCharacter extends Entity {
     this.currentHealth = this.maxHealth;
   }
 
-  /**
-   * Prints the player stats to the system in the following format
-   * Name
-   * Damage: 2
-   * Health: 20/20
-   */
-  public void displayCharacterInfo() {
-    System.out.printf("%s%n", this.getName());
-    System.out.printf("Damage: %d%n", this.getDamage());
-    System.out.printf("Health: %d/%d%n", 
-      this.getCurrentHealth(), this.getMaxHealth()
-    );
-  }
+  /** abstract */ 
+
+  public abstract void displayCharacterInfo();
 
   /** overrides */
 
