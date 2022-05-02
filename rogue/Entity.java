@@ -45,7 +45,7 @@ public abstract class Entity {
    */
   public boolean checkCollision(Entity otherEntity) {
     return (
-      this.posX == otherEntity.getX() && this.posY = otherEntity.getY()
+      this.posX == otherEntity.getX() && this.posY == otherEntity.getY()
     );
   }
 
@@ -54,6 +54,6 @@ public abstract class Entity {
   /**
    * @return  a marker used to render in the world map
    */
-  public abstract char getMapMarker() {}
+  public abstract char getMapMarker();
 
 }
