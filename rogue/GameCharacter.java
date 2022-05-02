@@ -2,7 +2,7 @@
  * Base attributes for a Game Character in Rogue.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public abstract class GameCharacter extends Entity {
+public abstract class GameCharacter extends Entity implements Moveable {
   
   // character state
   private String type = "Game Character";
@@ -154,6 +154,10 @@ public abstract class GameCharacter extends Entity {
   public void restoreHealth() {
     this.currentHealth = this.maxHealth;
   }
+
+  /** Moveable */
+
+  public abstract void move();
 
   /** abstract */ 
 
