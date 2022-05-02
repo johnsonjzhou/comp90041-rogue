@@ -13,17 +13,30 @@ public class Monster extends GameCharacter {
     this.setType("Monster");
   }
 
-  /** getter */
+  /** Entity */
 
   /**
    * @return  the first letter of the name in lower case
    */
-  @Override
   public char getMapMarker() {
     char marker = this.getName().charAt(0);
     return Character.toLowerCase(marker);
   }
 
-  /** public */
+  /** GameCharacter */
+
+  /**
+   * Prints the player stats to the system in the following format
+   * Name
+   * Damage: 2
+   * Health: 20/20
+   */
+  public void displayCharacterInfo() {
+    System.out.printf("%s%n", this.getName());
+    System.out.printf("Damage: %d%n", this.getDamage());
+    System.out.printf("Health: %d/%d%n", 
+      this.getCurrentHealth(), this.getMaxHealth()
+    );
+  }
 
 }
