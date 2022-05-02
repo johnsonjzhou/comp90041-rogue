@@ -2,7 +2,7 @@
  * Base attributes for a Game Character in Rogue.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public abstract class GameCharacter extends Entity implements Moveable {
+public abstract class GameCharacter extends Entity implements Moveable, Fightable {
   
   // character state
   private String type = "Game Character";
@@ -33,24 +33,6 @@ public abstract class GameCharacter extends Entity implements Moveable {
     this.name = Character.toUpperCase(firstChar) + name.substring(1);
   }
 
-  /**
-   * Sets the maxHealth and currentHealth, 
-   * this will effectively reset the currentHealth
-   * @param  maxHealth - value for maxHealth
-   */
-  public void setMaxHealth(int maxHealth) {
-    this.maxHealth = maxHealth;
-    this.currentHealth = maxHealth;
-  }
-
-  /**
-   * Sets the damage value
-   * @param  damage - the damage value as int
-   */
-  public void setDamage(int damage) {
-    this.damage = damage;
-  }
-
   /** getters */
 
   /**
@@ -79,13 +61,6 @@ public abstract class GameCharacter extends Entity implements Moveable {
    */
   public int getCurrentHealth() {
     return this.currentHealth;
-  }
-
-  /**
-   * @return  damage value as int
-   */
-  public int getDamage() {
-    return this.damage;
   }
 
   /**
@@ -120,15 +95,38 @@ public abstract class GameCharacter extends Entity implements Moveable {
     System.out.printf("%s '%s' created.%n", this.getType(), this.getName());
   }
 
-  /** 
-   * Receives a damage value and returns the value of currentHealth 
-   * after the damage is dealt
-   * @param  damage - damage value to apply to currentHealth
-   * @return  value of currentHealth after damage is dealt
+  /** Fightable */
+
+  /**
+   * Sets the maxHealth and currentHealth, 
+   * this will effectively reset the currentHealth
+   * @param  maxHealth - value for maxHealth
    */
-  public int receiveDamage(int damage) {
-    this.currentHealth -= damage;
-    return this.currentHealth;
+  public void setMaxHealth(int maxHealth) {
+    this.maxHealth = maxHealth;
+    this.currentHealth = maxHealth;
+  }
+
+  /**
+   * Restores the currentHealth to the maxHealth value
+   */
+  public void restoreHealth() {
+    this.currentHealth = this.maxHealth;
+  }
+
+  /**
+   * Sets the damage value
+   * @param  damage - the damage value as int
+   */
+  public void setDamage(int damage) {
+    this.damage = damage;
+  }
+
+  /**
+   * @return  damage value as int
+   */
+  public int getDamage() {
+    return this.damage;
   }
 
   /**
@@ -148,14 +146,26 @@ public abstract class GameCharacter extends Entity implements Moveable {
     return (foeHealth <= 0);
   }
 
-  /**
-   * Restores the currentHealth to the maxHealth value
+  /** 
+   * Receives a damage value and returns the value of currentHealth 
+   * after the damage is dealt
+   * @param  damage - damage value to apply to currentHealth
+   * @return  value of currentHealth after damage is dealt
    */
-  public void restoreHealth() {
-    this.currentHealth = this.maxHealth;
+  public int receiveDamage(int damage) {
+    this.currentHealth -= damage;
+    return this.currentHealth;
   }
 
   /** Moveable */
+
+  public int getX() {
+    return super.getX();
+  }
+
+  public int getY() {
+    return super.getY();
+  }
 
   public abstract void move();
 
