@@ -76,13 +76,24 @@ public class Player extends GameCharacter {
     this.setDamage(this.calculateDamage());
   }
 
+  /** Entity */
+
+  /**
+   * @return  the first letter of the name in upper case
+   */
+  public char getMapMarker() {
+    char marker = this.getName().charAt(0);
+    return Character.toUpperCase(marker);
+  }
+
+  /** GameCharacter */
+
   /**
    * Prints the player stats to the system in the following format
    * Name (Lv. 1)
    * Damage: 2
    * Health: 20/20
    */
-  @Override
   public void displayCharacterInfo() {
     System.out.printf("%s (Lv. %d)%n", this.getName(), this.level);
     System.out.printf("Damage: %d%n", this.getDamage());
