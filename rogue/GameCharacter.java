@@ -2,7 +2,7 @@
  * Base attributes for a Game Character in Rogue.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public abstract class GameCharacter extends Entity implements Moveable, Fightable {
+public abstract class GameCharacter extends Entity implements Moveable, Militant {
   
   // character state
   private String type = "Game Character";
@@ -167,7 +167,10 @@ public abstract class GameCharacter extends Entity implements Moveable, Fightabl
     return super.getY();
   }
 
-  public abstract void move();
+  public void move(int newX, int newY) {
+    this.setX(newX);
+    this.setY(newY);
+  };
 
   /** abstract */ 
 
