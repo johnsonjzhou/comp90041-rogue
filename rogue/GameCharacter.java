@@ -2,7 +2,7 @@
  * Base attributes for a Game Character in Rogue.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public class GameCharacter {
+public class GameCharacter extends Entity {
   
   // character state
   private String type = "Game Character";
@@ -53,20 +53,6 @@ public class GameCharacter {
    */
   public void setDamage(int damage) {
     this.damage = damage;
-  }
-
-  /**
-   * @param  x - x coordinate as int
-   */
-  public void setX(int x) {
-    this.posX = x;
-  }
-
-  /**
-   * @param  y - y coordinate as int
-   */
-  public void setY(int y) {
-    this.posY = y;
   }
 
   /** getters */
@@ -129,20 +115,6 @@ public class GameCharacter {
    */
   public boolean getAlive() {
     return (this.currentHealth > 0);
-  }
-
-  /**
-   * @return  x coordinate as int
-   */
-  public int getX() {
-    return this.posX;
-  }
-
-  /**
-   * @return  y coordinate as int
-   */
-  public int getY() {
-    return this.posY;
   }
 
   /** public */
