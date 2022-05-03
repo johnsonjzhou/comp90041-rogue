@@ -28,9 +28,9 @@ interface Militant {
   public int getDamage();
 
   /**
-   * Attacks another Fightable object 
+   * Attacks another Militant object 
    */
-  public boolean attacks(Fightable foe);
+  public boolean attacks(Militant foe);
 
   /**
    * Reduces the health value of self by applying the specified damage value 
