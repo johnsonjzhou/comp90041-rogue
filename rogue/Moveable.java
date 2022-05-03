@@ -13,5 +13,5 @@ interface Moveable {
   /**
    * Initiate a movement command 
    */
-  public void move(); 
+  public void move(int newX, int newY); 
 }
