@@ -10,14 +10,14 @@ public abstract class Entity {
   /**
    * @param  x - x coordinate as int
    */
-  protected void setX(int x) {
+  public void setX(int x) {
     this.posX = x;
   }
 
   /**
    * @param  y - y coordinate as int
    */
-  protected void setY(int y) {
+  public void setY(int y) {
     this.posY = y;
   }
 
@@ -26,14 +26,14 @@ public abstract class Entity {
   /**
    * @return  x coordinate as int
    */
-  protected int getX() {
+  public int getX() {
     return this.posX;
   }
 
   /**
    * @return  y coordinate as int
    */
-  protected int getY() {
+  public int getY() {
     return this.posY;
   }
 
