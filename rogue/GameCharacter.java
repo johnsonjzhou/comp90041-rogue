@@ -11,7 +11,9 @@ public abstract class GameCharacter extends Entity implements Moveable, Militant
   private int currentHealth = 0;
   private int damage = 0;
 
-  public GameCharacter() { }
+  public GameCharacter() {
+    super();
+  }
 
   /** setters */
 
@@ -95,7 +97,7 @@ public abstract class GameCharacter extends Entity implements Moveable, Militant
     System.out.printf("%s '%s' created.%n", this.getType(), this.getName());
   }
 
-  /** Fightable */
+  /** Militant */
 
   /**
    * Sets the maxHealth and currentHealth, 
@@ -146,6 +148,13 @@ public abstract class GameCharacter extends Entity implements Moveable, Militant
     return (foeHealth <= 0);
   }
 
+  @Override
+  public boolean attacks(Militant foe) {
+    if (foe instanceof GameCharacter) {
+      return this.attacks((GameCharacter) foe, true);
+    }
+  }
+
   /** 
    * Receives a damage value and returns the value of currentHealth 
    * after the damage is dealt
@@ -159,14 +168,7 @@ public abstract class GameCharacter extends Entity implements Moveable, Militant
 
   /** Moveable */
 
-  public int getX() {
-    return super.getX();
-  }
-
-  public int getY() {
-    return super.getY();
-  }
-
+  @Override
   public void move(int newX, int newY) {
     this.setX(newX);
     this.setY(newY);
