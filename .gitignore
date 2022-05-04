@@ -3,3 +3,6 @@
 
 # Java class files
 *.class
+
+# draw.io backup
+*.drawio.bkp
