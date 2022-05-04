@@ -1,6 +1,6 @@
 import java.lang.reflect.Field;
 
-public class Test {
+public class TestHarness {
   public static void main(String[] args) {
     Player player = new Player();
     Monster monster = new Monster();
