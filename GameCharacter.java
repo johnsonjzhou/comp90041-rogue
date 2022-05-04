@@ -153,6 +153,7 @@ public abstract class GameCharacter extends Entity implements Moveable, Militant
     if (foe instanceof GameCharacter) {
       return this.attacks((GameCharacter) foe, true);
     }
+    return false;
   }
 
   /** 
