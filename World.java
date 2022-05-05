@@ -143,7 +143,7 @@ public class World {
           newX -= 1;
           break;
         case "d":
-          newX +=1;
+          newX += 1;
           break;
         case "home":
           System.out.println(GameEngine.RETURN_HOME_MSG);
