@@ -56,4 +56,10 @@ public abstract class Entity {
    */
   public abstract char getMapMarker();
 
+  /** override */
+
+  public String toString() {
+    return String.valueOf(this.getMapMarker());
+  }
+
 }
