@@ -63,13 +63,13 @@ public class Battle {
     combat : while (this.inCombat) {
       this.displayStats();
 
-      boolean attackSuccess = this.attacker.attacks(this.defender, true);
+      boolean attackSuccess = this.attacker.attacks(this.defender);
       if (attackSuccess) { 
         this.setWinner(this.attacker);
         break combat; 
       }
 
-      boolean counterSuccess = this.defender.attacks(this.attacker, true);
+      boolean counterSuccess = this.defender.attacks(this.attacker);
       if (counterSuccess) { 
         this.setWinner(this.defender);
         break combat; 

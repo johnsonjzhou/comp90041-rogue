@@ -2,7 +2,8 @@
  * Base attributes for a Game Character in Rogue.
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public abstract class GameCharacter extends Entity implements Moveable, Militant {
+public abstract class GameCharacter extends Entity 
+  implements Moveable, Militant<GameCharacter> {
   
   // character state
   private String type = "Game Character";
@@ -138,22 +139,13 @@ public abstract class GameCharacter extends Entity implements Moveable, Militant
    * @param  output - whether to output the attack to the screen
    * @return  true if killed the foe || false if foe lives
    */
-  public boolean attacks(GameCharacter foe, boolean output) {
-    int foeHealth = foe.receiveDamage(this.getDamage());
-    if (output) {
-      System.out.printf("%s attacks %s for %d damage.%n",
-        this.getName(), foe.getName(), this.getDamage()
-      );
-    }
-    return (foeHealth <= 0);
-  }
-
   @Override
-  public boolean attacks(Militant foe) {
-    if (foe instanceof GameCharacter) {
-      return this.attacks((GameCharacter) foe, true);
-    }
-    return false;
+  public boolean attacks(GameCharacter foe) {
+    int foeHealth = foe.receiveDamage(this.getDamage());
+    System.out.printf("%s attacks %s for %d damage.%n",
+      this.getName(), foe.getName(), this.getDamage()
+    );
+    return (foeHealth <= 0);
   }
 
   /** 
