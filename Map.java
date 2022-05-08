@@ -69,4 +69,15 @@ public class Map {
   public char[][] getMap() {
     return this.map;
   }
+
+  public boolean traversable(int x, int y) {
+    switch(this.map[y][x]) {
+      case Map.GROUND: 
+        return true;
+      case Map.MOUNTAIN: 
+      case Map.WATER: 
+      default: 
+        return false;
+    }
+  }
 }
