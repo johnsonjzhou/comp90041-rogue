@@ -53,7 +53,15 @@ public class Map {
       }
 
       for (int j = 0; j < this.mapWidth; j++) {
-        this.map[i][j] = mapRow[j];
+        switch(mapRow[j]) {
+          case Map.GROUND: 
+          case Map.MOUNTAIN: 
+          case Map.WATER: 
+            this.map[i][j] = mapRow[j];
+            break; 
+          default: 
+            throw new IOExceptions();
+        }
       }
     }
   }
