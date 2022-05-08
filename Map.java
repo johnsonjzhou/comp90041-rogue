@@ -65,4 +65,8 @@ public class Map {
       }
     }
   }
+
+  public char[][] getMap() {
+    return this.map;
+  }
 }
