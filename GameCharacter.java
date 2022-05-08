@@ -28,10 +28,6 @@ public abstract class GameCharacter extends Entity
    * @param  name - the game character name as String
    */
   public void setName(String name) { 
-    if (name.equals("")) {
-      ScreenName generator = new ScreenName();
-      name = generator.getName();
-    }
     char firstChar = name.charAt(0);
     this.name = Character.toUpperCase(firstChar) + name.substring(1);
   }

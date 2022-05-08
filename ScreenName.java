@@ -1,9 +1,11 @@
 import java.util.Random;
 
 /**
+ * ! Deprecate
  * Generates a random name to use for the Game Character
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
+@Deprecated
 public class ScreenName {
   
   private String[] names = {
