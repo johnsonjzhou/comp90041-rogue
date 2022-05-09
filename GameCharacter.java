@@ -80,16 +80,29 @@ public abstract class GameCharacter extends Entity
   /** public */
 
   /**
-   * Populates the monster attributes and prints a confirmation
-   * @param  name - monster name as String
+   * Populates the character attributes and optionally prints a confirmation
+   * @param  name - character name as String
+   * @param  maxHealth - maximum health as int
+   * @param  damage - damage value as int
+   * @param  silent - create silently with no screen output 
+   */
+  public void create(String name, int maxHealth, int damage, boolean silent) {
+    this.setName(name);
+    this.setMaxHealth(maxHealth);
+    this.setDamage(damage);
+    if (!silent) {
+      System.out.printf("%s '%s' created.%n", this.getType(), this.getName());
+    }
+  }
+
+  /**
+   * Populates the character attributes and prints a confirmation
+   * @param  name - character name as String
    * @param  maxHealth - maximum health as int
    * @param  damage - damage value as int
    */
   public void create(String name, int maxHealth, int damage) {
-    this.setName(name);
-    this.setMaxHealth(maxHealth);
-    this.setDamage(damage);
-    System.out.printf("%s '%s' created.%n", this.getType(), this.getName());
+    this.create(name, maxHealth, damage, false);
   }
 
   /** Militant */
