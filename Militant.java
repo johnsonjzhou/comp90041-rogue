@@ -2,7 +2,7 @@
  * Minimum functionality for entities that can engage in fights. 
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-interface Militant<M> {
+interface Militant<T> {
 
   /**
    * Sets the maximum health value 
@@ -30,7 +30,7 @@ interface Militant<M> {
   /**
    * Attacks another Militant object 
    */
-  public boolean attacks(M foe);
+  public boolean attacks(T foe);
 
   /**
    * Reduces the health value of self by applying the specified damage value 
