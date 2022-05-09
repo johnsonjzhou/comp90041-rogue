@@ -23,13 +23,11 @@ public abstract class GameCharacter extends Entity
   }
 
   /** 
-   * Sets the name, ensuring the first character is a capital. 
-   * If a name is not provided, a random name will be assigned. 
+   * Sets the name as it was entered in the system 
    * @param  name - the game character name as String
    */
   public void setName(String name) { 
-    char firstChar = name.charAt(0);
-    this.name = Character.toUpperCase(firstChar) + name.substring(1);
+    this.name = name;
   }
 
   /** getters */
