@@ -9,6 +9,7 @@ public class Player extends GameCharacter {
 
   // player attributes
   private int level = 1;
+  private boolean ready = false;
 
   public Player() {
     // init GameCharacter
@@ -28,6 +29,13 @@ public class Player extends GameCharacter {
     this.resetAttributes();
   }
 
+  /**
+   * Sets the player as being ready to play 
+   */
+  public void setReady() {
+    this.ready = true;
+  }
+
   /** getters */
 
   /**
@@ -35,6 +43,13 @@ public class Player extends GameCharacter {
    */
   public int getLevel() {
     return this.level;
+  }
+
+  /**
+   * @return  <code>True</code> if player is ready to play 
+   */
+  public boolean getReady() {
+    return this.ready;
   }
 
   /** public */
