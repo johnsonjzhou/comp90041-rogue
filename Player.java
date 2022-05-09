@@ -3,6 +3,8 @@
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  *
  */
+import java.lang.NumberFormatException;
+
 public class Player extends GameCharacter {
 
   // player attributes
@@ -36,6 +38,39 @@ public class Player extends GameCharacter {
   }
 
   /** public */
+
+  /**
+   * Loads Player information from a string of text 
+   * @param  loadString  matching format <code>player x y</code> 
+   * @param  map  the world map 
+   * @throws  IOExceptions  if loadString does not contain valid data 
+   */
+  public void load(String loadString, Map map) throws IOExceptions {
+    String[] loaded = loadString.split(" ");
+
+    // validate string identifier 
+    if (!loaded[0].equals("player")) {
+      throw new IOExceptions("'player' identifier expected in loadString");
+    }
+
+    // parse player coordinates 
+    int x = -1;
+    int y = -1;
+    try {
+      x = Integer.parseInt(loaded[1]);
+      y = Integer.parseInt(loaded[2]);
+    } catch (NumberFormatException e) {
+      throw new IOExceptions("Could not parse player coordinates");
+    }
+
+    // set player coordinates 
+    if (!map.traversable(x, y) || x < 0 || y < 0) {
+      throw new IOExceptions("Non-traversable player coordinates");
+    }
+
+    this.setX(x);
+    this.setY(y);
+  }
 
   /**
    * Overloaded create method that takes only the name 
