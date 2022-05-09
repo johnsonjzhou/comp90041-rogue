@@ -40,7 +40,36 @@ public class Player extends GameCharacter {
   /** public */
 
   /**
-   * Loads Player information from a string of text 
+   * Loads Player attribute information from a string of text
+   * @param  loadString  matching format <code>name level</code>
+   * @throws  IOExceptions  if loadString does not contain valid data 
+   */
+  public void load(String loadString) throws IOExceptions {
+    String[] loaded = loadString.split(" ");
+
+    // validate string elements
+    if (loaded.length != 2) {
+      throw new IOExceptions("Unexpected length of player load string");
+    }
+
+    // parse and set player level 
+    try {
+      int level = Integer.parseInt(loaded[1]);
+      this.setLevel(level);
+    } catch (NumberFormatException e) {
+      throw new IOExceptions("Could not parse player level");
+    }
+
+    // set the name and apply calculated attributes 
+    this.setName(loaded[0]);
+    this.setMaxHealth(this.calculateMaxHealth());
+    this.setDamage(this.calculateDamage());
+
+    System.out.println("Player data loaded.");
+  }
+
+  /**
+   * Loads Player map information from a string of text 
    * @param  loadString  matching format <code>player x y</code> 
    * @param  map  the world map 
    * @throws  IOExceptions  if loadString does not contain valid data 
