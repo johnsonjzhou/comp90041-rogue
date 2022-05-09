@@ -76,9 +76,7 @@ public class Player extends GameCharacter {
     }
 
     // set the name and apply calculated attributes 
-    this.setName(loaded[0]);
-    this.setMaxHealth(this.calculateMaxHealth());
-    this.setDamage(this.calculateDamage());
+    this.create(loaded[0], this.calculateMaxHealth(), this.calculateDamage(), true);
 
     System.out.println("Player data loaded.");
   }
