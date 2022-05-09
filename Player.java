@@ -90,6 +90,11 @@ public class Player extends GameCharacter {
   public void load(String loadString, Map map) throws IOExceptions {
     String[] loaded = loadString.split(" ");
 
+    // validate string elements
+    if (loaded.length != 3) {
+      throw new IOExceptions("Unexpected length of player load string");
+    }
+
     // validate string identifier 
     if (!loaded[0].equals("player")) {
       throw new IOExceptions("'player' identifier expected in loadString");
