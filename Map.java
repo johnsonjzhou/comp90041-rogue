@@ -97,6 +97,13 @@ public class Map {
    * @return  <code>True</code> if traversable 
    */
   public boolean traversable(int col, int row) {
+    if (
+      col < 0 || col >= this.mapWidth 
+      || row < 0 || row >= this.mapHeight 
+    ) {
+      return false;
+    }
+
     switch(this.map[row][col]) {
       case Map.GROUND: 
         return true;
