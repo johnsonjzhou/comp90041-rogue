@@ -31,7 +31,6 @@ public class Monster extends GameCharacter {
   }
 
   /**
-   * todo Loads Monster information from a string of text 
    * @param  loadString  matching format 
    *                     <code>monster x y monsterName health attack</code> 
    * @param  map  the world map 
