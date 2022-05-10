@@ -13,16 +13,6 @@ public class Item extends Entity {
     this.type = type;
   }
 
-  /** getter */
-
-  public boolean isPassable() {
-    switch(this.type) {
-      case HEAL: return false;
-      case ATTACKUP: return false;
-      case WARPSTONE: default: return true;
-    }
-  }
-
   /** Entity */
 
   @Override
