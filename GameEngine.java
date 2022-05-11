@@ -14,6 +14,9 @@ public class GameEngine {
   public static final String PLAYER_SAVED_MSG = 
     "Player data saved.";
 
+  public static final String PLAYER_LOADED_MSG = 
+    "Player data loaded.";
+
   public static final String NO_MONSTER_MSG = 
     "No monster found, please create a monster with 'monster' first.";
 
@@ -125,8 +128,7 @@ public class GameEngine {
             break menuLoop;
 
           case GameEngine.MENU_CMD_LOAD:
-            //todo
-            System.out.println("Feature not yet implemented");
+            this.loadPlayer();
             continue commandLoop;
 
           case GameEngine.MENU_CMD_SAVE:
@@ -239,6 +241,28 @@ public class GameEngine {
     System.out.println("What is your character's name?");
     String name = this.console.readNext();
     this.player.create(name);
+  }
+
+  /**
+   * Loads player information from player.dat
+   */
+  public void loadPlayer() {
+    // create a player if none already exist
+    if (this.player == null) {
+      this.player = new Player();
+    }
+
+    // read the save line from file 
+    try {
+      FileIO file = new FileIO("player.dat");
+      if (file.canReadNextLine()) {
+        this.player.load(file.readNextLine());
+        System.out.println(GameEngine.PLAYER_LOADED_MSG);
+        return;
+      }
+    } catch (IOExceptions e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   /**
