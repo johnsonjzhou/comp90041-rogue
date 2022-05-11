@@ -38,6 +38,8 @@ public class GameEngine {
   public static final String MENU_CMD_COMMANDS = "commands";
   public static final String MENU_CMD_HELP = "help";
   public static final String MENU_CMD_PLAYER = "player";
+  public static final String MENU_CMD_LOAD = "load";
+  public static final String MENU_CMD_SAVE = "save";
   public static final String MENU_CMD_MONSTER = "monster";
   public static final String MENU_CMD_START = "start";
   public static final String MENU_CMD_EXIT = "exit";
@@ -113,6 +115,16 @@ public class GameEngine {
             System.out.println(GameEngine.EXIT_MSG);
             break menuLoop;
 
+          case GameEngine.MENU_CMD_LOAD:
+            //todo
+            System.out.println("Feature not yet implemented");
+            continue commandLoop;
+
+          case GameEngine.MENU_CMD_SAVE:
+            //todo
+            System.out.println("Feature not yet implemented");
+            continue commandLoop;
+
           default:
             this.displayHelp();
             continue commandLoop;
@@ -178,6 +190,8 @@ public class GameEngine {
    * Displays a list of available commands, save for its self
    * help
    * player
+   * load
+   * save
    * monster
    * start
    * exit
