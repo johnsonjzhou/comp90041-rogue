@@ -63,6 +63,14 @@ public class FileIO {
   }
 
   /**
+   * @return  <code>True</code> if and only if the file or directory 
+   *          denoted by this abstract pathname exists
+   */
+  public boolean exists() {
+    return this.file.exists();
+  }
+
+  /**
    * @return  whether there is another token to read from the file
    * @throws  IOExceptions  if file could not be opened with FileInputStream 
    */
