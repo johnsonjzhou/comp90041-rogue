@@ -17,6 +17,9 @@ public class GameEngine {
   public static final String PLAYER_LOADED_MSG = 
     "Player data loaded.";
 
+  public static final String PLAYER_LOAD_ERROR = 
+    "No player data found.";
+
   public static final String NO_MONSTER_MSG = 
     "No monster found, please create a monster with 'monster' first.";
 
@@ -255,11 +258,12 @@ public class GameEngine {
     // read the save line from file 
     try {
       FileIO file = new FileIO("player.dat");
-      if (file.canReadNextLine()) {
+      if (file.exists() && file.canReadNextLine()) {
         this.player.load(file.readNextLine());
         System.out.println(GameEngine.PLAYER_LOADED_MSG);
         return;
       }
+      System.out.println(GameEngine.PLAYER_LOAD_ERROR);
     } catch (IOExceptions e) {
       System.out.println(e.getMessage());
     }
