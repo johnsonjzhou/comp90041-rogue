@@ -11,6 +11,9 @@ public class GameEngine {
   public static final String NO_PLAYER_MSG = 
     "No player found, please create a player with 'player' first.";
 
+  public static final String PLAYER_SAVED_MSG = 
+    "Player data saved.";
+
   public static final String NO_MONSTER_MSG = 
     "No monster found, please create a monster with 'monster' first.";
 
@@ -31,6 +34,12 @@ public class GameEngine {
 
   public static final String RETURN_HOME_MSG = 
     "Returning home...";
+
+  public static final String IO_LOAD_ERROR = 
+    "An error occurred while loading the file.";
+
+  public static final String IO_SAVE_ERROR = 
+    "An error occurred while saving the file.";
 
   public static final String EXIT_MSG = 
     "Thank you for playing Rogue!";
@@ -121,8 +130,7 @@ public class GameEngine {
             continue commandLoop;
 
           case GameEngine.MENU_CMD_SAVE:
-            //todo
-            System.out.println("Feature not yet implemented");
+            this.savePlayer();
             continue commandLoop;
 
           default:
@@ -231,6 +239,31 @@ public class GameEngine {
     System.out.println("What is your character's name?");
     String name = this.console.readNext();
     this.player.create(name);
+  }
+
+  /**
+   * Saves current player information to player.dat
+   */
+  private void savePlayer() {
+    // handle player not created
+    if (this.player == null) {
+      System.out.println(GameEngine.NO_PLAYER_MSG);
+      return;
+    }
+
+    // format playerData into saveable string 
+    String playerData = String.format("%s %s", 
+      this.player.getName(), this.player.getLevel()
+    );
+    
+    // save to player.dat 
+    try {
+      FileIO file = new FileIO("player.dat");
+      file.setWritable().overwrite(playerData);
+      System.out.println(GameEngine.PLAYER_SAVED_MSG);
+    } catch (IOExceptions e) {
+      System.out.println(GameEngine.IO_SAVE_ERROR);
+    }
   }
 
   /**
