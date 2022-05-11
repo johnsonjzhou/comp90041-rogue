@@ -100,7 +100,8 @@ public class GameEngine {
 
       commandLoop : while(true) {
         this.console.printPrompt();
-        String input = this.console.readNext();
+        this.console.clearBuffer();
+        String input = this.console.readBufferedNext();
         
         switch(input) {
           case GameEngine.MENU_CMD_COMMANDS:
