@@ -6,13 +6,16 @@
 import java.util.Scanner;
 import java.lang.NumberFormatException;
 import java.lang.NullPointerException;
+import java.util.ArrayList;
 
 public class UserConsole {
 
   private Scanner stdin;
+  private ArrayList<String> inputBuffer; 
 
   public UserConsole() {
     this.stdin = new Scanner(System.in);
+    this.inputBuffer = new ArrayList<String>();
   }
 
   /** getter */
@@ -91,6 +94,32 @@ public class UserConsole {
 
   public int readInt() {
     return this.readInt(GameEngine.INVALID_INPUT_MSG);
+  }
+
+  public String readBufferedNext() {
+    // return and remove the first element in the inputBuffer
+    if (this.inputBuffer.size() > 0) {
+      return this.inputBuffer.remove(0);
+    }
+
+    // receive from the console and add to buffer
+    try {
+      String input = this.stdin.nextLine();
+      for (String next : input.split(" ")) {
+        this.inputBuffer.add(next);
+      }
+      return this.readBufferedNext();
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+  public boolean hasBufferedNext() {
+    return (this.inputBuffer.size() > 0);
+  }
+
+  public void clearBuffer() {
+    this.inputBuffer.clear();
   }
 
   public boolean waitUserEnter() {
