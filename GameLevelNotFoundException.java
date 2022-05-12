@@ -3,7 +3,14 @@
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
 public class GameLevelNotFoundException extends Exception {
+
+  public static final String GEN_MESSAGE = "Map not found.";
+
   public GameLevelNotFoundException() {
-    super("Map not found.");
+    super(GameLevelNotFoundException.GEN_MESSAGE);
+  }
+
+  public GameLevelNotFoundException(String message) {
+    super(GameLevelNotFoundException.GEN_MESSAGE, new Throwable(message));
   }
 }
