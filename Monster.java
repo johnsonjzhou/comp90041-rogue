@@ -5,12 +5,18 @@
  */
 public class Monster extends GameCharacter {
 
+  public static final int DEFAULT_START_X = 4;
+  public static final int DEFAULT_START_Y = 2;
+
   public Monster() {
     // init GameCharacter
     super();
 
     // init Monster
     this.setType("Monster");
+
+    // set default location 
+    this.resetLocation();
   }
 
   /**
@@ -76,6 +82,14 @@ public class Monster extends GameCharacter {
     } catch (NumberFormatException e) {
       throw new IOExceptions("Could not parse monster attributes");
     }
+  }
+
+  /**
+   * Resets the monster location to default 
+   */
+  public void resetLocation() {
+    this.setX(Monster.DEFAULT_START_X);
+    this.setY(Monster.DEFAULT_START_Y);
   }
 
   /** Entity */
