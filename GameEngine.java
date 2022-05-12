@@ -11,6 +11,9 @@ public class GameEngine {
   public static final String NO_PLAYER_MSG = 
     "No player found, please create a player with 'player' first.";
 
+  public static final String NO_PLAYER_DATA_MSG = 
+    "No player data to save.";
+
   public static final String PLAYER_SAVED_MSG = 
     "Player data saved.";
 
@@ -274,7 +277,7 @@ public class GameEngine {
   private void savePlayer() {
     // handle player not created
     if (this.player == null) {
-      System.out.println(GameEngine.NO_PLAYER_MSG);
+      System.out.println(GameEngine.NO_PLAYER_DATA_MSG);
       return;
     }
 
