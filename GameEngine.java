@@ -47,6 +47,9 @@ public class GameEngine {
   public static final String IO_SAVE_ERROR = 
     "An error occurred while saving the file.";
 
+  public static final String MAP_NOT_FOUND_ERROR = 
+    "Map not found.";
+
   public static final String EXIT_MSG = 
     "Thank you for playing Rogue!";
 
@@ -114,7 +117,13 @@ public class GameEngine {
             break commandLoop;
 
           case GameEngine.MENU_CMD_START:
-            this.startGameDefault();
+            if (this.console.hasBufferedNext()) {
+              String filename = this.console.readBufferedNext();
+              this.console.clearBuffer();
+              this.startGameFromFile(filename);
+            } else {
+              this.startGameDefault();
+            }
             this.console.waitUserEnter();
             break commandLoop;
 
@@ -254,8 +263,8 @@ public class GameEngine {
         return;
       }
       System.out.println(GameEngine.PLAYER_LOAD_ERROR);
-    } catch (IOExceptions e) {
-      System.out.println(e.getMessage());
+    } catch (IOExceptions | GameLevelNotFoundException e) {
+      System.out.println(GameEngine.IO_LOAD_ERROR);
     }
   }
 
@@ -279,7 +288,7 @@ public class GameEngine {
       FileIO file = new FileIO("player.dat");
       file.setWritable().overwrite(playerData);
       System.out.println(GameEngine.PLAYER_SAVED_MSG);
-    } catch (IOExceptions e) {
+    } catch (GameLevelNotFoundException e) {
       System.out.println(GameEngine.IO_SAVE_ERROR);
     }
   }
@@ -336,6 +345,50 @@ public class GameEngine {
     } catch (IOExceptions e) {
       // actually should not error here 
       System.out.println(e.getCause());
+    }
+  }
+
+  private void startGameFromFile(String filename) {
+    // handle player not created
+    if (this.player == null) {
+      System.out.println(GameEngine.NO_PLAYER_MSG);
+      return;
+    }
+
+    try {
+      FileIO file = new FileIO(String.format("%s.dat", filename));
+      ArrayList<String> fileLines = file.readContentsAsArray();
+      GameFile gameFile = new GameFile(fileLines);
+      gameFile.readFile();
+
+      // create map 
+      Map map = new Map(gameFile.getMapLines());
+
+      // load player from gamefile
+      this.player.load(gameFile.getPlayerLine(), map);
+
+      // ready to load entities
+      ArrayList<Entity> entities = new ArrayList<Entity>();
+
+      // load monsters from gamefile 
+      for (String monsterLine : gameFile.getMonsterLines()) {
+        entities.add(new Monster(monsterLine, map));
+      }
+
+      // load items from gamefile
+      for (String itemLine : gameFile.getItemLines()) {
+        entities.add(new Item(itemLine, map));
+      }
+
+      // create and start a new world 
+      this.startWorld(map, this.player, entities);
+
+    } catch (GameLevelNotFoundException e) {
+      System.out.println(GameEngine.MAP_NOT_FOUND_ERROR);
+    } catch (IOExceptions e) {
+      System.out.println(GameEngine.IO_LOAD_ERROR);
+    } catch (Exception e) {
+      System.out.println(GameEngine.GEN_ERROR_MSG);
     }
   }
 
