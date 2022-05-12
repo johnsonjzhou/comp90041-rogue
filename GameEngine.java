@@ -53,6 +53,10 @@ public class GameEngine {
   public static final String MAP_NOT_FOUND_ERROR = 
     "Map not found.";
 
+  public static final String ITEM_HEAL = "Healed!";
+  public static final String ITEM_ATTACK_UP = "Attack up!";
+  public static final String ITEM_COMPLETE = "World complete! (You leveled up!)";
+
   public static final String EXIT_MSG = 
     "Thank you for playing Rogue!";
 
@@ -331,6 +335,7 @@ public class GameEngine {
 
     // restore player health and add to the world
     if (this.player != null) {
+      this.player.resetAttributes();
       this.player.restoreHealth();
       this.player.resetLocation();
     }
@@ -369,6 +374,8 @@ public class GameEngine {
 
       // load player from gamefile
       this.player.load(gameFile.getPlayerLine(), map);
+      this.player.resetAttributes();
+      this.player.restoreHealth();
 
       // ready to load entities
       ArrayList<Entity> entities = new ArrayList<Entity>();
@@ -409,7 +416,7 @@ public class GameEngine {
     } catch (WorldNotReady e) {
       System.out.println(e.getMessage());
     } catch (GameOver e) {
-      // do nothing 
+      this.player.resetAttributes();
     } catch (Exception e) {
       System.out.println(GameEngine.GEN_ERROR_MSG);
     }
