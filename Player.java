@@ -7,6 +7,9 @@ import java.lang.NumberFormatException;
 
 public class Player extends GameCharacter {
 
+  public static final int DEFAULT_START_X = 1;
+  public static final int DEFAULT_START_Y = 1;
+
   // player attributes
   private int level = 1;
   private boolean ready = false;
@@ -154,6 +157,14 @@ public class Player extends GameCharacter {
   public void resetAttributes() {
     this.setMaxHealth(this.calculateMaxHealth());
     this.setDamage(this.calculateDamage());
+  }
+
+  /**
+   * Resets the player location to default 
+   */
+  public void resetLocation() {
+    this.setX(Player.DEFAULT_START_X);
+    this.setY(Player.DEFAULT_START_Y);
   }
 
   /** Entity */
