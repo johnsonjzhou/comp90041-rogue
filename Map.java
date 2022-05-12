@@ -45,6 +45,11 @@ public class Map {
    *                        use <code>error.getCause</code> for more details. 
    */
   private void parseMap(ArrayList<String> blueprint) throws IOExceptions {
+
+    if (blueprint.size() < 1) {
+      throw new IOExceptions("Map blueprint is empty");
+    }
+
     // first line of blueprint is dimensions
     String[] dimensions = blueprint.remove(0).split(" ");
     
