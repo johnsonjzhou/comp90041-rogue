@@ -194,6 +194,7 @@ public class World {
     battle.begin();
     GameCharacter winner = battle.getWinner();
     if (winner instanceof Player) {
+      System.out.println();
       this.entities.remove(battle.getLoser());
       if (!this.checkMonsterExist()) {
         throw new GameOver();
