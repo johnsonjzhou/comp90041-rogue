@@ -141,7 +141,7 @@ public class World {
           break;
         case "home":
           System.out.println(GameEngine.RETURN_HOME_MSG);
-          break moving;
+          throw new GameOver();
         default:
           continue moving;
       }
@@ -162,10 +162,9 @@ public class World {
             new Battle(this.player, (Monster) entity)
           );
         }
-        
+
         if (entity instanceof Item) {
-          // todo implement
-          System.out.println("Item collision");
+          this.itemPickup((Item) entity);
         }
       }
     }
@@ -202,6 +201,29 @@ public class World {
     }
     if (winner instanceof Monster) {
       throw new GameOver();
+    }
+  }
+
+  /**
+   * Handles item pickup 
+   * @throws GameOver if planer picks up the warp stone 
+   */
+  private void itemPickup(Item item) throws GameOver {
+    switch (item.getType()) {
+      case HEAL:
+        this.player.restoreHealth();
+        System.out.println(GameEngine.ITEM_HEAL);
+        break;
+      case ATTACKUP:
+        this.player.setDamage(this.player.getDamage() + 1);
+        System.out.println(GameEngine.ITEM_ATTACK_UP);
+        break;
+      case WARPSTONE: 
+        this.player.setLevel(this.player.getLevel() + 1);
+        System.out.println(GameEngine.ITEM_COMPLETE);
+        throw new GameOver();
+      default:
+        return;
     }
   }
 
