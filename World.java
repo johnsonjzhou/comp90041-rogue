@@ -161,8 +161,8 @@ public class World {
           this.battleLoop(
             new Battle(this.player, (Monster) entity)
           );
-          System.out.println("Monster collision");
         }
+        
         if (entity instanceof Item) {
           // todo implement
           System.out.println("Item collision");
