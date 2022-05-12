@@ -101,6 +101,13 @@ public class Item extends Entity {
     throw new IOExceptions("Item symbol is not of known type");
   }
 
+  /**
+   * @return  this item type 
+   */
+  public Types getType() {
+    return this.type;
+  }
+
   /** Entity */
 
   @Override
