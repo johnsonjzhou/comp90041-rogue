@@ -7,6 +7,9 @@ import java.lang.NumberFormatException;
 
 public class Map {
 
+  public static final int DEFAULT_HEIGHT = 4;
+  public static final int DEFAULT_WIDTH = 6;
+
   public static final char GROUND = '.';
   public static final char MOUNTAIN = '#';
   public static final char WATER = '~';
@@ -19,6 +22,20 @@ public class Map {
    * @param  blueprint  the map scaffold as loaded from file 
    */
   public Map(ArrayList<String> blueprint) throws IOExceptions {
+    this.parseMap(blueprint);
+  }
+
+  /**
+   * Builds and loads a default map as per V1 specifications 
+   */
+  public Map() throws IOExceptions {
+    ArrayList<String> blueprint = new ArrayList<String>();
+    blueprint.add(String.format("%d %d", 
+      Map.DEFAULT_WIDTH, Map.DEFAULT_HEIGHT
+    ));
+    for (int row = 0; row < Map.DEFAULT_HEIGHT; row++) {
+      blueprint.add(String.format("%c", Map.GROUND).repeat(Map.DEFAULT_WIDTH));
+    }
     this.parseMap(blueprint);
   }
 
