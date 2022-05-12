@@ -7,30 +7,25 @@ import java.util.ArrayList;
 
 public class World {
 
-  public static final int DEFAULT_HEIGHT = 4;
-  public static final int DEFAULT_WIDTH = 6;
-  public static final int PLAYER_START_X = 1;
-  public static final int PLAYER_START_Y = 1;
-  public static final int MONSTER_START_X = 4;
-  public static final int MONSTER_START_Y = 2;
-
   private Player player;
-  private ArrayList<Monster> monsters;
-  private int mapHeight;
-  private int mapWidth;
+  private ArrayList<Entity> entities;
+  private Map map;
   private UserConsole console;
 
-  public World() {
-    this.mapHeight = World.DEFAULT_HEIGHT;
-    this.mapWidth = World.DEFAULT_WIDTH;
-  }
-
-  public World(int mapHeight, int mapWidth) {
-    this.mapHeight = mapHeight;
-    this.mapWidth = mapWidth;
+  public World(Map map, Player player, ArrayList<Entity> entities) {
+    this.setMap(map);
+    this.setPlayer(player);
+    this.setEntities(entities);
   }
 
   /** setters */
+
+  /**
+   * @param  map - the map as Map 
+   */
+  public void setMap(Map map) {
+    this.map = map;
+  }
 
   /**
    * @param  player - the player as Player
@@ -39,11 +34,8 @@ public class World {
     this.player = player;
   }
 
-  /**
-   * @param  monster - the monster as ArrayList<Monster>
-   */
-  public void setMonster(ArrayList<Monster> monsters) {
-    this.monsters = monsters;
+  public void setEntities(ArrayList<Entity> entities) {
+    this.entities = entities;
   }
 
   /**
@@ -63,25 +55,24 @@ public class World {
    * ......
    */
   private void renderMap() {
-    for (int row = 0; row < this.mapHeight; row++) {
-      for (int col = 0; col < this.mapWidth; col++) {
+    char[][] map = this.map.getMap();
+    for (int row = 0; row < map.length; row++) {
+      char[] mapRow = map[row];
+      for (int col = 0; col < mapRow.length; col++) {
         // default map marker
-        char marker = '.';
+        char marker = mapRow[col];
 
-        // check if position matches the player
-        if (
-          this.player != null & 
-          col == this.player.getX() && row == this.player.getY()
-        ) {
-          marker = this.player.getMapMarker();
+        // check if position matches any of the entities
+        findEntity : for (Entity entity : this.entities) {
+          if (col == entity.getX() && row == entity.getY()) {
+            marker = entity.getMapMarker();
+            break findEntity;
+          }
         }
 
-        // check if position matches any of the monsters
-        // ! if multiple monsters, the most recently created will be shown
-        for (Monster monster : this.monsters) {
-          if (col == monster.getX() && row == monster.getY()) {
-            marker = monster.getMapMarker();
-          }
+        // check if position matches the player
+        if (col == this.player.getX() && row == this.player.getY()) {
+          marker = this.player.getMapMarker();
         }
         
         // display the marker
@@ -92,40 +83,43 @@ public class World {
   }
 
   /**
-   * Resets the player and monster locations to default
-   * ! ALERT, if multiple monsters, they all start at the same location
-   * ! take care for future scope
+   * Checks whether player and entities have collided. 
+   * Seggregate entities into monsters and items. 
+   * If multiple, this returns the entity that was added first in the ArrayList. 
+   * If mixed monsters, items, monsters will preceed items in the ArrayList. 
+   * @return  ArrayList of Entities, will be empty if no collisions 
    */
-  private void reset() {
-    if (this.player != null) { 
-      this.player.setX(World.PLAYER_START_X);
-      this.player.setY(World.PLAYER_START_Y);
-    }
+  private ArrayList<Entity> checkCollision() {
+    ArrayList<Entity> collidedEntities = new ArrayList<Entity>();
+    ArrayList<Entity> collidedMonsters = new ArrayList<Entity>();
+    ArrayList<Entity> collidedItems = new ArrayList<Entity>();
 
-    for (Monster monster : this.monsters) {
-      monster.setX(World.MONSTER_START_X);
-      monster.setY(World.MONSTER_START_Y);
-    }
-  }
-
-  /**
-   * Checks whether player and monster has collided
-   * ! if colliding multiple monsters, the first created monster is returned
-   * @return  -1 no collision | index of coliding monster
-   */
-  private int checkCollision() {
-    for (Monster monster : this.monsters) {
+    for (Entity entity : this.entities) {
       if (
-        this.player.getX() == monster.getX() && 
-        this.player.getY() == monster.getY()
+        this.player.getX() == entity.getX() && 
+        this.player.getY() == entity.getY()
       ) {
-        return this.monsters.indexOf(monster);
+        if (entity instanceof Monster) {
+          collidedMonsters.add(entity);
+        }
+        if (entity instanceof Item) {
+          collidedItems.add(entity);
+        }
       }
     }
-    return -1;
+
+    if (collidedMonsters.size() > 0) {
+      collidedEntities.addAll(collidedMonsters);
+    }
+
+    if (collidedItems.size() > 0) {
+      collidedEntities.addAll(collidedItems);
+    }
+
+    return collidedEntities;
   }
 
-  private void movementLoop() throws CharacterCollision{
+  private void movementLoop() throws GameOver {
     moving : while(true) {
       this.renderMap();
       this.console.printPrompt();
@@ -151,20 +145,63 @@ public class World {
         default:
           continue moving;
       }
-      if (
-        (newX >= 0) && (newX < this.mapWidth) && 
-        (newY >= 0) && (newY < this.mapHeight)
-      ) {
+      if (this.map.traversable(newX, newY)) {
         this.player.setX(newX);
         this.player.setY(newY);
       }
 
-      int monsterCollision = this.checkCollision();
-      if (monsterCollision >= 0) {
-        throw new CharacterCollision(
-          new Battle(this.player, this.monsters.get(monsterCollision))
-        );
+      ArrayList<Entity> collidedEntities = this.checkCollision();
+
+      if (collidedEntities.size() < 1) {
+        continue moving;
       }
+
+      for (Entity entity : collidedEntities) {
+        if (entity instanceof Monster) {
+          this.battleLoop(
+            new Battle(this.player, (Monster) entity)
+          );
+          System.out.println("Monster collision");
+        }
+        if (entity instanceof Item) {
+          // todo implement
+          System.out.println("Item collision");
+        }
+      }
+    }
+  }
+
+  /**
+   * @return  <code>True</code> if at least one monster exist in entities 
+   */
+  private boolean checkMonsterExist() {
+    for (Entity entity : this.entities) {
+      if (entity instanceof Monster) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Runs the battleloop
+   * If the player is the winner, remove the monster 
+   * If the monster is the winner, Game Over 
+   * @throws  GameOver  if player loses 
+   * @throws  GameOver  if there are no more monsters 
+   */
+  private void battleLoop(Battle battle) throws GameOver {
+    battle.announce();
+    battle.begin();
+    GameCharacter winner = battle.getWinner();
+    if (winner instanceof Player) {
+      this.entities.remove(battle.getLoser());
+      if (!this.checkMonsterExist()) {
+        throw new GameOver();
+      }
+    }
+    if (winner instanceof Monster) {
+      throw new GameOver();
     }
   }
 
@@ -173,11 +210,9 @@ public class World {
   /**
    * Starts the game world. Check if player and monster have been 
    * initiated. 
-   * If the player collides with the monster, a CharacterCollision
-   * exception bubbles.
    * @return  false if not ready
    */
-  public void start() throws WorldNotReady, CharacterCollision {
+  public void start() throws WorldNotReady, GameOver {
     if (this.console == null) {
       throw new WorldNotReady(GameEngine.GEN_ERROR_MSG);
     }
@@ -186,20 +221,12 @@ public class World {
       throw new WorldNotReady(GameEngine.NO_PLAYER_MSG);
     }
 
-    if (this.monsters == null || this.monsters.size() <= 0) {
+    if (this.entities == null || !this.checkMonsterExist()) {
       throw new WorldNotReady(GameEngine.NO_MONSTER_MSG);
     }
 
-    // reset the player positions
-    this.reset();
-
     // begin the movement loop
-    try {
-      this.movementLoop();
-    } catch (CharacterCollision c) {
-      // bubble the CharacterCollision and Battle to the GameEngine
-      throw new CharacterCollision(c.getBattle());
-    }
+    this.movementLoop();
   }
 }
 
@@ -218,26 +245,8 @@ class WorldNotReady extends Exception {
   }
 }
 
-/**
- * To be thrown when two game characters collide and will 
- * carry a Battle object with the attacker and defender
- */
-class CharacterCollision extends Exception {
-
-  private Battle battle;
-
-  /**
-   * @param  battle - a battle resulting from the collision
-   */
-  public CharacterCollision(Battle battle) {
-    super("Game characters have collided");
-    this.battle = battle;
-  }
-
-  /**
-   * @return  the battle object
-   */
-  public Battle getBattle() {
-    return this.battle;
+class GameOver extends Exception {
+  public GameOver() {
+    super();
   }
 }
