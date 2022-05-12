@@ -8,6 +8,7 @@ public class Battle {
   private GameCharacter attacker;
   private GameCharacter defender;
   private GameCharacter winner;
+  private GameCharacter loser;
   private boolean inCombat;
 
   /**
@@ -25,6 +26,21 @@ public class Battle {
   public void setWinner(GameCharacter winner) {
     this.winner = winner;
     this.inCombat = false;
+  }
+
+  public void setLoser(GameCharacter loser) {
+    this.loser = loser;
+    this.inCombat = false;
+  }
+
+  /** getters */
+
+  public GameCharacter getWinner() {
+    return this.winner;
+  }
+
+  public GameCharacter getLoser() {
+    return this.loser;
   }
 
   /** private */
@@ -58,20 +74,21 @@ public class Battle {
    * and a winner is declared.
    */
   public void begin() {
-    // ?: need to check health of attacker/defender before beginning?
-    // ?: not in current brief
     combat : while (this.inCombat) {
       this.displayStats();
 
       boolean attackSuccess = this.attacker.attacks(this.defender);
       if (attackSuccess) { 
         this.setWinner(this.attacker);
+        this.setLoser(this.defender);
         break combat; 
+        
       }
 
       boolean counterSuccess = this.defender.attacks(this.attacker);
       if (counterSuccess) { 
         this.setWinner(this.defender);
+        this.setLoser(this.attacker);
         break combat; 
       }
 
