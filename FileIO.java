@@ -42,21 +42,21 @@ public class FileIO {
 
   /**
    * Starts a scanner instance for file reading 
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  private void startReader() throws IOExceptions {
+  private void startReader() throws GameLevelNotFoundException {
     try {
       this.reader = new Scanner(new FileInputStream(file));
     } catch (FileNotFoundException | SecurityException e) {
-      throw new IOExceptions("Could not open file for reading");
+      throw new GameLevelNotFoundException("Could not open file for reading");
     }
   }
 
   /**
    * Checks if scanner instance has been started and starts one 
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  private void checkAndLoadReader() throws IOExceptions {
+  private void checkAndLoadReader() throws GameLevelNotFoundException {
     if (!(this.reader instanceof Scanner)) {
       this.startReader();
     }
@@ -72,45 +72,45 @@ public class FileIO {
 
   /**
    * @return  whether there is another token to read from the file
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  public boolean canReadNext() throws IOExceptions {
+  public boolean canReadNext() throws GameLevelNotFoundException {
     this.checkAndLoadReader();
     return this.reader instanceof Scanner ? this.reader.hasNext() : false;
   }
 
   /**
    * @return  next token read from the file as String
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  public String readNext() throws IOExceptions {
+  public String readNext() throws GameLevelNotFoundException {
     this.checkAndLoadReader();
     return this.canReadNext() ? this.reader.next() : "";
   }
 
   /**
    * @return  whether this is another line to read from the file 
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  public boolean canReadNextLine() throws IOExceptions {
+  public boolean canReadNextLine() throws GameLevelNotFoundException {
     this.checkAndLoadReader();
     return this.reader.hasNextLine();
   }
 
   /**
    * @return  the remainder of the current line as String 
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  public String readNextLine() throws IOExceptions {
+  public String readNextLine() throws GameLevelNotFoundException {
     this.checkAndLoadReader();
     return this.canReadNextLine() ? this.reader.nextLine() : "";
   }
 
   /**
    * @return  the entire file contents as an ArrayList of Strings 
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  public ArrayList<String> readContentsAsArray() throws IOExceptions {
+  public ArrayList<String> readContentsAsArray() throws GameLevelNotFoundException {
     this.resetReader();
     ArrayList<String> contents = new ArrayList<String>();
     while (this.canReadNextLine()) {
@@ -130,9 +130,9 @@ public class FileIO {
 
   /**
    * Close and restarts the Scanner instance for file reading 
-   * @throws  IOExceptions  if file could not be opened with FileInputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
    */
-  public void resetReader() throws IOExceptions {
+  public void resetReader() throws GameLevelNotFoundException {
     this.closeReader();
     this.startReader();
   }
@@ -142,18 +142,18 @@ public class FileIO {
   /**
    * Opens a file for writing
    * @param  append  append to the file rather than overwriting it 
-   * @throws  IOExceptions  if read only operation is specified 
-   * @throws  IOExceptions  if file could not be opened with FileOutputStream 
+   * @throws  GameLevelNotFoundException  if read only operation is specified 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileOutputStream 
    */
-  private PrintWriter openWritableFile(boolean append) throws IOExceptions {
+  private PrintWriter openWritableFile(boolean append) throws GameLevelNotFoundException {
     if (this.readonly) {
-      throw new IOExceptions("File operation in readonly mode");
+      throw new GameLevelNotFoundException("File operation in readonly mode");
     }
 
     try {
       return new PrintWriter(new FileOutputStream(file, append));
     } catch (FileNotFoundException | SecurityException e) {
-      throw new IOExceptions("Could not open file for writing");
+      throw new GameLevelNotFoundException("Could not open file for writing");
     }
   }
 
@@ -169,9 +169,9 @@ public class FileIO {
   /**
    * Writes to the file by replacing its current contents 
    * @param  text  the string text to write to the file 
-   * @throws  IOExceptions  if file could not be opened with FileOutputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileOutputStream 
    */
-  public void overwrite(String text) throws IOExceptions {
+  public void overwrite(String text) throws GameLevelNotFoundException {
     PrintWriter file = this.openWritableFile(false);
     file.println(text);
     file.close();
@@ -180,9 +180,9 @@ public class FileIO {
   /**
    * Appends one line of string text to the file 
    * @param  text  the string text to write to the file 
-   * @throws  IOExceptions  if file could not be opened with FileOutputStream 
+   * @throws  GameLevelNotFoundException  if file could not be opened with FileOutputStream 
    */
-  public void writeLine(String text) throws IOExceptions {
+  public void writeLine(String text) throws GameLevelNotFoundException {
     PrintWriter file = this.openWritableFile(true);
     file.println(text);
     file.close();
