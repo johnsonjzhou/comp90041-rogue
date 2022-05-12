@@ -59,10 +59,8 @@ public class GameEngine {
   public static final String MENU_CMD_START = "start";
   public static final String MENU_CMD_EXIT = "exit";
 
-  private World world;
   private Player player;
-  // ?: there may be more than one monster in the future
-  private ArrayList<Monster> monsters;
+  private Monster monster;
   private UserConsole console;
   
   public static void main(String[] args) {
@@ -77,13 +75,6 @@ public class GameEngine {
   public GameEngine() {
     // Creates an instance of UserConsole to receive user inputs
     this.console = new UserConsole();
-
-    // initiate monsters list
-    this.monsters = new ArrayList<Monster>();
-
-    // initiate World and attach the user console
-    this.world = new World();
-    this.world.setConsole(this.console);
   }
 
   /** private */
@@ -123,7 +114,7 @@ public class GameEngine {
             break commandLoop;
 
           case GameEngine.MENU_CMD_START:
-            this.startGame();
+            this.startGameDefault();
             this.console.waitUserEnter();
             break commandLoop;
 
@@ -182,10 +173,8 @@ public class GameEngine {
     System.out.printf("Player: %s  | Monster: %s%n", 
       this.player == null ? 
         GameEngine.NULL_CHARACTER_MSG : this.player.getStats(), 
-      this.monsters.size() == 0 ? 
-        GameEngine.NULL_CHARACTER_MSG : 
-        // display the most recently created monster
-        this.monsters.get(this.monsters.size() - 1).getStats() 
+      this.monster == null ? 
+        GameEngine.NULL_CHARACTER_MSG : this.monster.getStats()
     );
   }
 
@@ -299,26 +288,23 @@ public class GameEngine {
    * Create a new monster
    */
   private void createMonster() {
-    // handle monster quantity
-    // there is only one monster in this version
-    // ?: this behaviour may change in future versions
-    if (this.monsters.size() >= 0) {
-      this.monsters.clear();
-    }
-
     // create a new monster and add it to the monsters list
-    Monster newMonster = new Monster();
+    this.monster = new Monster();
     System.out.print("Monster name: ");
     String name = this.console.readNext();
     System.out.print("Monster health: ");
     int maxHealth = this.console.readInt(GameEngine.INT_INPUT_MSG);
     System.out.print("Monster damage: ");
     int damage = this.console.readInt(GameEngine.INT_INPUT_MSG);
-    newMonster.create(name, maxHealth, damage);
-    this.monsters.add(newMonster);
+    this.monster.create(name, maxHealth, damage);
   }
 
-  private void startGame() {
+  /**
+   * Starts a default game, which behaves identically to A1
+   */
+  private void startGameDefault() {
+    ArrayList<Entity> entities = new ArrayList<Entity>();
+    
     // handle player not created
     if (this.player == null) {
       System.out.println(GameEngine.NO_PLAYER_MSG);
@@ -326,7 +312,7 @@ public class GameEngine {
     }
 
     // handle monster not created
-    if (this.monsters == null || this.monsters.size() <= 0) {
+    if (this.monster == null) {
       System.out.println(GameEngine.NO_MONSTER_MSG);
       return;
     }
@@ -334,27 +320,40 @@ public class GameEngine {
     // restore player health and add to the world
     if (this.player != null) {
       this.player.restoreHealth();
-      this.world.setPlayer(this.player);
+      this.player.resetLocation();
     }
 
     // restore monster health and add to the world
-    for (Monster monster : this.monsters) {
-      monster.restoreHealth();
+    if (this.monster != null) {
+      this.monster.restoreHealth();
+      this.monster.resetLocation();
+      entities.add(monster);
     }
-    this.world.setMonster(this.monsters);
 
-    // start the world engine
-    // initiate a battle if a player-monster collision is thrown within the world
-    // catch if the world is not ready (player, monsters or console not set)
-    // catch additional exceptions if they arise
     try {
+      Map map = new Map();
+      this.startWorld(map, this.player, entities);
+    } catch (IOExceptions e) {
+      // actually should not error here 
+      System.out.println(e.getCause());
+    }
+  }
+
+  /**
+   * Starts a game by creating a new game world 
+   * @param  map  a map instance 
+   * @param  player  a player instance 
+   * @param  entities  an ArrayList of Entity, one of which should be a monster
+   */
+  private void startWorld(Map map, Player player, ArrayList<Entity> entities) {
+    try {
+      World world = new World(map, player, entities);
+      world.setConsole(this.console);
       world.start();
-    } catch (CharacterCollision c) {
-      Battle battle = c.getBattle();
-      battle.announce();
-      battle.begin();
     } catch (WorldNotReady e) {
       System.out.println(e.getMessage());
+    } catch (GameOver e) {
+      // do nothing 
     } catch (Exception e) {
       System.out.println(GameEngine.GEN_ERROR_MSG);
     }
