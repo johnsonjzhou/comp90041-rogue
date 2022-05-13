@@ -143,7 +143,11 @@ public class World {
         this.moveMonsters();
       }
       this.console.printPrompt();
-      String command = this.console.readNext();
+      
+      // readBufferedNext is required as opposed to readNext for empty inputs
+      String command = this.console.readBufferedNext();
+      this.console.clearBuffer();
+
       int newX = this.player.getX();
       int newY = this.player.getY();
       switch(command) {
