@@ -109,13 +109,4 @@ class GameFile {
   public ArrayList<String> getItemLines() {
     return this.itemLines;
   }
-
-  /**
-   * todo
-   */
-  public void writeFile() {
-
-  }
-
-
 }
