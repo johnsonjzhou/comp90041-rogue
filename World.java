@@ -258,9 +258,10 @@ public class World {
     if (winner instanceof Player) {
       System.out.println();
       this.entities.remove(battle.getLoser());
-      if (!this.checkMonsterExist()) {
-        throw new GameOver();
-      }
+      // game continues if all monster defeated per Ed post #266
+      // if (!this.checkMonsterExist()) {
+      //   throw new GameOver();
+      // }
     }
     if (winner instanceof Monster) {
       throw new GameOver();
