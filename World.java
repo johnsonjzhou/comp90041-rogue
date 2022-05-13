@@ -11,6 +11,7 @@ public class World {
   private ArrayList<Entity> entities;
   private Map map;
   private UserConsole console;
+  private boolean monsterMove = false;
 
   public World(Map map, Player player, ArrayList<Entity> entities) {
     this.setMap(map);
@@ -43,6 +44,13 @@ public class World {
    */
   public void setConsole(UserConsole console) {
     this.console = console;
+  }
+
+  /**
+   * @param  moveable  whether the mosters are allowed to move 
+   */
+  public void setMonsterMove(boolean moveable) {
+    this.monsterMove = moveable;
   }
 
   /** private */
