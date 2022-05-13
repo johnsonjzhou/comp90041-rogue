@@ -182,6 +182,7 @@ public class World {
 
         if (entity instanceof Item) {
           this.itemPickup((Item) entity);
+          this.entities.remove(entity);
         }
       }
     }
