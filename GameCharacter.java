@@ -89,6 +89,7 @@ public abstract class GameCharacter extends Entity
   public void create(String name, int maxHealth, int damage, boolean silent) {
     this.setName(name);
     this.setMaxHealth(maxHealth);
+    this.restoreHealth();
     this.setDamage(damage);
     if (!silent) {
       System.out.printf("%s '%s' created.%n", this.getType(), this.getName());
@@ -108,13 +109,11 @@ public abstract class GameCharacter extends Entity
   /** Militant */
 
   /**
-   * Sets the maxHealth and currentHealth, 
-   * this will effectively reset the currentHealth
+   * Sets the maxHealth and currentHealth 
    * @param  maxHealth - value for maxHealth
    */
   public void setMaxHealth(int maxHealth) {
     this.maxHealth = maxHealth;
-    this.currentHealth = maxHealth;
   }
 
   /**
