@@ -132,12 +132,7 @@ public class World {
     moving : while(true) {
       this.renderMap();
       if (this.monsterMove) {
-        try {
-          this.moveMonsters();
-        } catch (Exception e) {
-          System.out.println(e.getMessage());
-          System.out.println(e.getStackTrace());
-        }
+        this.moveMonsters();
       }
       this.console.printPrompt();
       String command = this.console.readNext();
