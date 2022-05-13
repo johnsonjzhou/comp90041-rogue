@@ -220,34 +220,30 @@ public class World {
       int deltaX = Math.abs(vectorX);
       int vectorY = monster.getY() - this.player.getY();
       int deltaY = Math.abs(vectorY);
-      int newX = monster.getX();
-      int newY = monster.getY();
 
       if (deltaX > 2 || deltaY > 2) {
         // player outside 2x2 grid 
         continue getMonster;
       }
 
+      // move east / west 
       if (deltaX > 0) {
-        newX -= (vectorX / deltaX);
+        int newX = monster.getX() - (vectorX / deltaX);
+        if (map.traversable(newX, monster.getY())) {
+          monster.setX(newX);
+          System.out.println("x:" + newX);
+          continue getMonster;
+        }
       }
       
-      if (deltaY > 0) {
-        newY -= (vectorY / deltaY);
-      }
-
-      // move east / west 
-      if (map.traversable(newX, monster.getY())) {
-        monster.setX(newX);
-        System.out.println("x:" + newX);
-        continue getMonster;
-      }
-
       // move north / south 
-      if (map.traversable(monster.getX(), newY)) {
-        monster.setY(newY);
-        System.out.println("y:" + newY);
-        continue getMonster;
+      if (deltaY > 0) {
+        int newY = monster.getY() - (vectorY / deltaY);
+        if (map.traversable(monster.getX(), newY)) {
+          monster.setY(newY);
+          System.out.println("y:" + newY);
+          continue getMonster;
+        }
       }
     }
   }
