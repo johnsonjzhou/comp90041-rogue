@@ -349,7 +349,7 @@ public class GameEngine {
 
     try {
       Map map = new Map();
-      this.startWorld(map, this.player, entities);
+      this.startWorld(map, this.player, entities, false);
     } catch (IOExceptions e) {
       // actually should not error here 
       System.out.println(e.getCause());
@@ -391,7 +391,7 @@ public class GameEngine {
       }
 
       // create and start a new world 
-      this.startWorld(map, this.player, entities);
+      this.startWorld(map, this.player, entities, true);
 
     } catch (GameLevelNotFoundException e) {
       System.out.println(GameEngine.MAP_NOT_FOUND_ERROR);
@@ -407,11 +407,14 @@ public class GameEngine {
    * @param  map  a map instance 
    * @param  player  a player instance 
    * @param  entities  an ArrayList of Entity, one of which should be a monster
+   * @param  moveMonsters  whether monsters can move 
    */
-  private void startWorld(Map map, Player player, ArrayList<Entity> entities) {
+  private void startWorld(
+    Map map, Player player, ArrayList<Entity> entities, boolean moveMonsters) {
     try {
       World world = new World(map, player, entities);
       world.setConsole(this.console);
+      world.setMonsterMove(moveMonsters);
       world.start();
     } catch (WorldNotReady e) {
       System.out.println(e.getMessage());
