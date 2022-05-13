@@ -5,6 +5,7 @@
  */
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.lang.NullPointerException;
 
 public class GameEngine {
 
@@ -295,7 +296,7 @@ public class GameEngine {
       FileIO file = new FileIO("player.dat");
       file.setWritable().overwrite(playerData);
       System.out.println(GameEngine.PLAYER_SAVED_MSG);
-    } catch (GameLevelNotFoundException e) {
+    } catch (IOExceptions e) {
       System.out.println(GameEngine.IO_SAVE_ERROR);
     }
   }
@@ -393,7 +394,7 @@ public class GameEngine {
       // create and start a new world 
       this.startWorld(map, this.player, entities, true, false);
 
-    } catch (GameLevelNotFoundException e) {
+    } catch (GameLevelNotFoundException | NullPointerException e) {
       System.out.println(GameEngine.MAP_NOT_FOUND_ERROR);
     } catch (IOExceptions e) {
       System.out.println(GameEngine.IO_LOAD_ERROR);
