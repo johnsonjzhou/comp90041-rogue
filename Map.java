@@ -92,14 +92,17 @@ public class Map {
           case Map.GROUND: 
           case Map.MOUNTAIN: 
           case Map.WATER: 
+          default:
             this.map[i][j] = mapRow[j];
             break; 
-          default: 
-            throw new IOExceptions(
-              String.format("Unsupported map char %c at [%d][%d]", 
-                mapRow[j], i, j
-              )
-            );
+          //! unsure whether to check for map char constraint, decided not to
+          // @see https://edstem.org/au/courses/7656/discussion/827871?comment=1929362
+          // default: 
+          //   throw new IOExceptions(
+          //     String.format("Unsupported map char %c at [%d][%d]", 
+          //       mapRow[j], i, j
+          //     )
+          //   );
         }
       }
     }
@@ -127,12 +130,14 @@ public class Map {
     }
 
     switch(this.map[row][col]) {
-      case Map.GROUND: 
-        return true;
+      // "#" and "~" indicate non-traversable tiles, 
+      // and any other symbol indicates a traversable tile.
       case Map.MOUNTAIN: 
       case Map.WATER: 
-      default: 
         return false;
+      case Map.GROUND: 
+      default:
+        return true;
     }
   }
 }
