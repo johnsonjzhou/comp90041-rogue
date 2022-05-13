@@ -13,6 +13,7 @@ public class World {
   private Map map;
   private UserConsole console;
   private boolean monsterMove = false;
+  private boolean winWhenNoMonsters = false;
 
   public World(Map map, Player player, ArrayList<Entity> entities) {
     this.setMap(map);
@@ -52,6 +53,13 @@ public class World {
    */
   public void setMonsterMove(boolean moveable) {
     this.monsterMove = moveable;
+  }
+
+  /**
+   * @param  winWhenNoMonsters  whether to end the game when all monsters defeated 
+   */
+  public void setWinCondition(boolean winWhenNoMonsters) {
+    this.winWhenNoMonsters = winWhenNoMonsters;
   }
 
   /** private */
@@ -258,10 +266,11 @@ public class World {
     if (winner instanceof Player) {
       System.out.println();
       this.entities.remove(battle.getLoser());
-      // game continues if all monster defeated per Ed post #266
-      // if (!this.checkMonsterExist()) {
-      //   throw new GameOver();
-      // }
+      // game ends if all monsters defeated in V1
+      // game continues if all monster defeated per Ed post #266 in V2
+      if (this.winWhenNoMonsters && !this.checkMonsterExist()) {
+        throw new GameOver();
+      }
     }
     if (winner instanceof Monster) {
       throw new GameOver();
