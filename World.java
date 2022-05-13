@@ -4,6 +4,7 @@
  *
  */
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class World {
 
@@ -130,6 +131,14 @@ public class World {
   private void movementLoop() throws GameOver {
     moving : while(true) {
       this.renderMap();
+      if (this.monsterMove) {
+        try {
+          this.moveMonsters();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+          System.out.println(e.getStackTrace());
+        }
+      }
       this.console.printPrompt();
       String command = this.console.readNext();
       int newX = this.player.getX();
@@ -151,7 +160,7 @@ public class World {
           System.out.println(GameEngine.RETURN_HOME_MSG);
           throw new GameOver();
         default:
-          continue moving;
+          break;
       }
       if (this.map.traversable(newX, newY)) {
         this.player.setX(newX);
@@ -188,6 +197,59 @@ public class World {
       }
     }
     return false;
+  }
+
+  /**
+   * Moves any of the monster entities 
+   */
+  private void moveMonsters() {
+    // do not move monsters if negative flag 
+    if (!this.monsterMove) {
+      return;
+    }
+
+    getMonster : for (Entity entity : this.entities) {
+      // do nothing if not a monster 
+      if (!(entity instanceof Monster)) {
+        continue getMonster;
+      }
+
+      Monster monster = (Monster) entity;
+
+      int vectorX = monster.getX() - this.player.getX();
+      int deltaX = Math.abs(vectorX);
+      int vectorY = monster.getY() - this.player.getY();
+      int deltaY = Math.abs(vectorY);
+      int newX = monster.getX();
+      int newY = monster.getY();
+
+      if (deltaX > 2 || deltaY > 2) {
+        // player outside 2x2 grid 
+        continue getMonster;
+      }
+
+      if (deltaX > 0) {
+        newX -= (vectorX / deltaX);
+      }
+      
+      if (deltaY > 0) {
+        newY -= (vectorY / deltaY);
+      }
+
+      // move east / west 
+      if (map.traversable(newX, monster.getY())) {
+        monster.setX(newX);
+        System.out.println("x:" + newX);
+        continue getMonster;
+      }
+
+      // move north / south 
+      if (map.traversable(monster.getX(), newY)) {
+        monster.setY(newY);
+        System.out.println("y:" + newY);
+        continue getMonster;
+      }
+    }
   }
 
   /**
