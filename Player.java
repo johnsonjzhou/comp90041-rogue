@@ -13,6 +13,7 @@ public class Player extends GameCharacter {
   // player attributes
   private int level = 1;
   private boolean ready = false;
+  private int damageModifier = 0;
 
   public Player() {
     // init GameCharacter
@@ -37,6 +38,20 @@ public class Player extends GameCharacter {
    */
   public void setReady() {
     this.ready = true;
+  }
+
+  /**
+   * Increases the damage modifier by 1
+   */
+  public void increaseDamageModifier() {
+    this.damageModifier += 1;
+  }
+
+  /**
+   * Resets the damage modifier to 0 
+   */
+  public void resetDamageModifier() {
+    this.damageModifier = 0;
   }
 
   /** getters */
@@ -165,6 +180,14 @@ public class Player extends GameCharacter {
   public void resetLocation() {
     this.setX(Player.DEFAULT_START_X);
     this.setY(Player.DEFAULT_START_Y);
+  }
+
+  /**
+   * @return  damage value plus damage modifier as int
+   */
+  @Override
+  public int getDamage() {
+    return super.getDamage() + this.damageModifier;
   }
 
   /** Entity */
