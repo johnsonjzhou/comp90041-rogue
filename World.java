@@ -161,6 +161,7 @@ public class World {
           break;
         case "home":
           System.out.println(GameEngine.RETURN_HOME_MSG);
+          this.player.resetDamageModifier();
           throw new GameOver();
         default:
           break;
@@ -235,7 +236,6 @@ public class World {
         int newX = monster.getX() - (vectorX / deltaX);
         if (map.traversable(newX, monster.getY())) {
           monster.setX(newX);
-          System.out.println("x:" + newX);
           continue getMonster;
         }
       }
@@ -245,7 +245,6 @@ public class World {
         int newY = monster.getY() - (vectorY / deltaY);
         if (map.traversable(monster.getX(), newY)) {
           monster.setY(newY);
-          System.out.println("y:" + newY);
           continue getMonster;
         }
       }
@@ -273,6 +272,7 @@ public class World {
       }
     }
     if (winner instanceof Monster) {
+      this.player.resetDamageModifier();
       throw new GameOver();
     }
   }
@@ -288,7 +288,7 @@ public class World {
         System.out.println(GameEngine.ITEM_HEAL);
         break;
       case ATTACKUP:
-        this.player.setDamage(this.player.getDamage() + 1);
+        this.player.increaseDamageModifier();
         System.out.println(GameEngine.ITEM_ATTACK_UP);
         break;
       case WARPSTONE: 
