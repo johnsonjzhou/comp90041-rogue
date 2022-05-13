@@ -92,10 +92,19 @@ public class UserConsole {
     return output;
   }
 
+  /**
+   * Reads the next input as an integer 
+   */
   public int readInt() {
     return this.readInt(GameEngine.INVALID_INPUT_MSG);
   }
 
+  /**
+   * Creates a read buffer by reading the entire input line 
+   * and splitting at the spaces. 
+   * This then enables to step through each of the input items iteratively. 
+   * @return  the next string from the buffer 
+   */
   public String readBufferedNext() {
     // return and remove the first element in the inputBuffer
     if (this.inputBuffer.size() > 0) {
@@ -114,14 +123,23 @@ public class UserConsole {
     }
   }
 
+  /**
+   * Checks whether there is another item in the buffer 
+   */
   public boolean hasBufferedNext() {
     return (this.inputBuffer.size() > 0);
   }
 
+  /**
+   * Clear the buffer 
+   */
   public void clearBuffer() {
     this.inputBuffer.clear();
   }
 
+  /**
+   * Wait for the user to press enter 
+   */
   public boolean waitUserEnter() {
     try {
       System.out.println();
@@ -132,6 +150,9 @@ public class UserConsole {
     return false;
   }
 
+  /**
+   * Close the input 
+   */
   public void close() {
     this.stdin.close();
   }
