@@ -251,22 +251,25 @@ public class GameEngine {
     System.out.println("What is your character's name?");
     String name = this.console.readNext();
     this.player.create(name);
+    this.player.setReady();
   }
 
   /**
    * Loads player information from player.dat
    */
   public void loadPlayer() {
-    // create a player if none already exist
-    if (this.player == null) {
-      this.player = new Player();
-    }
-
     // read the save line from file 
     try {
       FileIO file = new FileIO("player.dat");
       if (file.exists() && file.canReadNextLine()) {
+        // create a player if none already exist
+        if (this.player == null) {
+          this.player = new Player();
+        }
+
         this.player.load(file.readNextLine());
+        this.player.setReady();
+
         System.out.println(GameEngine.PLAYER_LOADED_MSG);
         return;
       }
@@ -323,7 +326,7 @@ public class GameEngine {
     ArrayList<Entity> entities = new ArrayList<Entity>();
     
     // handle player not created
-    if (this.player == null) {
+    if (this.player == null || !this.player.getReady()) {
       System.out.println(GameEngine.NO_PLAYER_MSG);
       return;
     }
@@ -359,7 +362,7 @@ public class GameEngine {
 
   private void startGameFromFile(String filename) {
     // handle player not created
-    if (this.player == null) {
+    if (this.player == null || !this.player.getReady()) {
       System.out.println(GameEngine.NO_PLAYER_MSG);
       return;
     }
