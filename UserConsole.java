@@ -147,14 +147,17 @@ public class UserConsole {
   /**
    * Wait for the user to press enter 
    */
-  public boolean waitUserEnter() {
+  public void waitUserEnter() {
     try {
       System.out.println();
       this.printMessage(GameEngine.WAIT_ENTER_KEY_MSG);
       this.stdin.nextLine();
+    } catch (Exception e) {
+      // NoSuchElementException
+      // thrown if directed input does not exist 
+    } finally {
       System.out.println();
-    } catch (Exception e) { }
-    return false;
+    }
   }
 
   /**
