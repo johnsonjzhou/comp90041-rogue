@@ -143,6 +143,11 @@ public class World {
         this.moveMonsters();
       }
       this.console.printPrompt();
+
+      // break out of loop if directed input non-existent 
+      if (!this.console.hasNext()) {
+        throw new GameOver();
+      }
       
       // readBufferedNext is required as opposed to readNext for empty inputs
       String command = this.console.readBufferedNext();
