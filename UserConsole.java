@@ -124,6 +124,13 @@ public class UserConsole {
   }
 
   /**
+   * @return  <code>True</code> if scanner has another token 
+   */
+  public boolean hasNext() {
+    return this.stdin.hasNext();
+  }
+
+  /**
    * Checks whether there is another item in the buffer 
    */
   public boolean hasBufferedNext() {
