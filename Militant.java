@@ -2,7 +2,7 @@
  * Minimum functionality for entities that can engage in fights. 
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-interface Militant<T> {
+interface Militant<T extends GameCharacter> {
 
   /**
    * Sets the maximum health value 
