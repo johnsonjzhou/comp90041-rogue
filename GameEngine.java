@@ -102,6 +102,12 @@ public class GameEngine {
 
       commandLoop : while(true) {
         this.console.printPrompt();
+
+        // break out of loop if direct input non-existent 
+        if (!this.console.hasNext()) {
+          break menuLoop;
+        }
+
         this.console.clearBuffer();
         String input = this.console.readBufferedNext();
         
@@ -136,7 +142,6 @@ public class GameEngine {
             break commandLoop;
 
           case GameEngine.MENU_CMD_EXIT:
-            System.out.println(GameEngine.EXIT_MSG);
             break menuLoop;
 
           case GameEngine.MENU_CMD_LOAD:
@@ -154,10 +159,7 @@ public class GameEngine {
       }
     }
 
-    // tidy up
-    if (this.console != null) {
-      this.console.close();
-    }
+    this.exitGame();
   }
   
   /**
@@ -430,5 +432,18 @@ public class GameEngine {
     } catch (Exception e) {
       System.out.println(GameEngine.GEN_ERROR_MSG);
     }
+  }
+
+  /**
+   * Gracefully exits the game
+   */
+  private void exitGame() {
+    // tidy up
+    if (this.console != null) {
+      this.console.close();
+    }
+
+    System.out.println(GameEngine.EXIT_MSG);
+    System.exit(0);
   }
 }
