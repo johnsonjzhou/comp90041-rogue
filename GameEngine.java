@@ -355,7 +355,9 @@ public class GameEngine {
 
     try {
       Map map = new Map();
-      this.startWorld(map, this.player, entities, false, true);
+      // Monsters will move in A1 mode as per Ed post #274
+      // https://edstem.org/au/courses/7656/discussion/847157
+      this.startWorld(map, this.player, entities, true, true);
     } catch (IOExceptions e) {
       // actually should not error here 
       System.out.println(e.getCause());
