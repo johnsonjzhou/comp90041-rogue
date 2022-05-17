@@ -414,7 +414,7 @@ public class GameEngine {
    * @param  player  a player instance 
    * @param  entities  an ArrayList of Entity, one of which should be a monster
    * @param  moveMonsters  whether monsters can move 
-   * @param  winWhenNoMosters  whether killing all monsters will win the game 
+   * @param  winWhenNoMonsters  whether killing all monsters will win the game 
    */
   private void startWorld(Map map, Player player, ArrayList<Entity> entities, 
     boolean moveMonsters, boolean winWhenNoMonsters 
