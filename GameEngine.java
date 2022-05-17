@@ -5,6 +5,7 @@
  */
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.lang.NullPointerException;
 
 public class GameEngine {
@@ -103,13 +104,15 @@ public class GameEngine {
       commandLoop : while(true) {
         this.console.printPrompt();
 
-        // break out of loop if direct input non-existent 
-        if (!this.console.hasNext()) {
-          break menuLoop;
+        String input;
+        try {
+          this.console.clearBuffer();
+          input = this.console.readBufferedNext();
+        } catch (NoSuchElementException e) {
+          // handle end of file in directed inputs 
+          this.exitGame();
+          return;
         }
-
-        this.console.clearBuffer();
-        String input = this.console.readBufferedNext();
         
         switch(input) {
           case GameEngine.MENU_CMD_COMMANDS:

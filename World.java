@@ -4,6 +4,7 @@
  *
  */
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.lang.Math;
 
 public class World {
@@ -145,13 +146,18 @@ public class World {
       this.console.printPrompt();
 
       // break out of loop if directed input non-existent 
-      if (!this.console.hasNext()) {
-        throw new GameOver();
-      }
+
       
       // readBufferedNext is required as opposed to readNext for empty inputs
-      String command = this.console.readBufferedNext();
-      this.console.clearBuffer();
+      String command;
+      try {
+        this.console.clearBuffer();
+        command = this.console.readBufferedNext();
+        this.console.clearBuffer();
+      } catch (NoSuchElementException e) {
+        // handle end of file in directed inputs 
+        throw new GameOver();
+      }
 
       int newX = this.player.getX();
       int newY = this.player.getY();

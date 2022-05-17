@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.lang.NumberFormatException;
 import java.lang.NullPointerException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class UserConsole {
 
@@ -105,22 +106,18 @@ public class UserConsole {
    * This then enables to step through each of the input items iteratively. 
    * @return  the next string from the buffer 
    */
-  public String readBufferedNext() {
+  public String readBufferedNext() throws NoSuchElementException {
     // return and remove the first element in the inputBuffer
     if (this.inputBuffer.size() > 0) {
       return this.inputBuffer.remove(0);
     }
 
     // receive from the console and add to buffer
-    try {
-      String input = this.stdin.nextLine();
-      for (String next : input.split(" ")) {
-        this.inputBuffer.add(next);
-      }
-      return this.readBufferedNext();
-    } catch (Exception e) {
-      return "";
+    String input = this.stdin.nextLine();
+    for (String next : input.split(" ")) {
+      this.inputBuffer.add(next);
     }
+    return this.readBufferedNext();
   }
 
   /**
