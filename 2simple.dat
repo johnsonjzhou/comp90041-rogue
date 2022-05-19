@@ -1,0 +1,16 @@
+13 6
+~~~###~.....#
+###~~~..##..#
+~~.....##..~~
+###...###..~~
+~~~....~~...#
+###~~~~~~#.##
+player 4 4
+monster 6 2 Goblin 5 1
+monster 10 2 Hunter 15 2
+monster 10 3 Rock 27 3
+monster 10 4 Beast 25 10
+item 9 2 +
+item 6 4 ^
+item 2 2 ^
+item 10 5 @
