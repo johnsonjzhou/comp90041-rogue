@@ -267,11 +267,8 @@ public class GameEngine {
     try {
       FileIO file = new FileIO("player.dat");
       if (file.exists() && file.canReadNextLine()) {
-        // create a player if none already exist
-        if (this.player == null) {
-          this.player = new Player();
-        }
-
+        // create a player or override existing 
+        this.player = new Player();
         this.player.load(file.readNextLine());
         this.player.setReady();
 
