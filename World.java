@@ -307,12 +307,44 @@ public class World {
         System.out.println(GameEngine.ITEM_ATTACK_UP);
         break;
       case WARPSTONE: 
-        this.player.setLevel(this.player.getLevel() + 1);
-        System.out.println(GameEngine.ITEM_COMPLETE);
+        this.playerWins();
         throw new GameOver();
       default:
         return;
     }
+  }
+
+  /**
+   * Handle when player wins the level 
+   */
+  private void playerWins() {
+    this.player.setLevel(this.player.getLevel() + 1);
+    System.out.println(GameEngine.ITEM_COMPLETE);
+  }
+
+  /**
+   * Checks entities for a warp stone, if not, 
+   * set the win condition to when all monsters have been eliminated 
+   * @see  https://edstem.org/au/courses/7656/discussion/868301
+   */
+  private void checkWarpStoneExist() {
+    checkEntities : for (Entity entity : this.entities) {
+      if (!(entity instanceof Item)) {
+        continue checkEntities;
+      }
+
+      Item item = (Item) entity;
+      
+      switch (item.getType()) {
+        case WARPSTONE:
+          return;
+        default:
+          continue checkEntities;
+      }
+    }
+
+    // if no warp stone is present, win when no monsters 
+    this.winWhenNoMonsters = true;
   }
 
   /** public */
@@ -334,6 +366,9 @@ public class World {
     if (this.entities == null || !this.checkMonsterExist()) {
       throw new WorldNotReady(GameEngine.NO_MONSTER_MSG);
     }
+
+    // check for warp stone and handle win condition 
+    this.checkWarpStoneExist();
 
     // begin the movement loop
     this.movementLoop();
