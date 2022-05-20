@@ -135,7 +135,7 @@ public class GameEngine {
             break commandLoop;
 
           case GameEngine.MENU_CMD_START:
-          String gameFile = "";
+            String gameFile = "";
             if (this.console.hasBufferedNext()) {
               gameFile = this.console.readBufferedNext();
             }
