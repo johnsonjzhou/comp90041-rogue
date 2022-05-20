@@ -249,7 +249,7 @@ public class World {
       // move east / west 
       if (deltaX > 0) {
         int newX = monster.getX() - (vectorX / deltaX);
-        if (map.traversable(newX, monster.getY())) {
+        if (this.map.traversable(newX, monster.getY())) {
           monster.setX(newX);
           continue getMonster;
         }
@@ -258,7 +258,7 @@ public class World {
       // move north / south 
       if (deltaY > 0) {
         int newY = monster.getY() - (vectorY / deltaY);
-        if (map.traversable(monster.getX(), newY)) {
+        if (this.map.traversable(monster.getX(), newY)) {
           monster.setY(newY);
           continue getMonster;
         }
