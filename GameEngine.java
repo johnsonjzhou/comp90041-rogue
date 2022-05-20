@@ -6,6 +6,7 @@
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.io.IOException;
 import java.lang.NullPointerException;
 
 public class GameEngine {
@@ -134,13 +135,11 @@ public class GameEngine {
             break commandLoop;
 
           case GameEngine.MENU_CMD_START:
+          String gameFile = "";
             if (this.console.hasBufferedNext()) {
-              String filename = this.console.readBufferedNext();
-              this.console.clearBuffer();
-              this.startGameFromFile(filename);
-            } else {
-              this.startGameDefault();
+              gameFile = this.console.readBufferedNext();
             }
+            this.startGame(gameFile);
             this.console.waitUserEnter();
             break commandLoop;
 
@@ -321,10 +320,29 @@ public class GameEngine {
     this.monster.create(name, maxHealth, damage);
   }
 
+  private void startGame(String gameFile) {
+    try {
+      // no game file specified
+      if (gameFile.length() < 1) {
+        this.prepareWorld();
+        return;
+      }
+
+      this.prepareWorld(gameFile);
+
+    } catch (GameLevelNotFoundException | NullPointerException e) {
+      System.out.println(GameEngine.MAP_NOT_FOUND_ERROR);
+    } catch (FileIOException e) {
+      System.out.println(GameEngine.IO_LOAD_ERROR);
+    } catch (Exception e) {
+      System.out.println(GameEngine.GEN_ERROR_MSG);
+    }
+  }
+
   /**
    * Starts a default game, which behaves identically to A1
    */
-  private void startGameDefault() {
+  private void prepareWorld() throws IOException {
     ArrayList<Entity> entities = new ArrayList<Entity>();
     
     // handle player not created
@@ -353,61 +371,60 @@ public class GameEngine {
       entities.add(monster);
     }
 
-    try {
-      Map map = new Map();
-      // Monsters will move in A1 mode as per Ed post #274
-      // https://edstem.org/au/courses/7656/discussion/847157
-      this.startWorld(map, this.player, entities, true, true);
-    } catch (FileIOException e) {
-      // actually should not error here 
-      System.out.println(e.getCause());
-    }
+    Map map = new Map();
+    // Monsters will move in A1 mode as per Ed post #274
+    // https://edstem.org/au/courses/7656/discussion/847157
+    this.startWorld(map, this.player, entities, true, true);
   }
 
-  private void startGameFromFile(String filename) {
+  /**
+   * Starts a game by loading from the game file
+   * @param  filename  filename.dat containing the game file
+   */
+  private void prepareWorld(String filename) 
+    throws GameLevelNotFoundException, FileIOException {
     // handle player not created
     if (this.player == null || !this.player.getReady()) {
       System.out.println(GameEngine.NO_PLAYER_MSG);
       return;
     }
 
+    FileIO file;
+    ArrayList<String> fileLines;
+
     try {
-      FileIO file = new FileIO(String.format("%s.dat", filename));
-      ArrayList<String> fileLines = file.readContentsAsArray();
-      GameFile gameFile = new GameFile(fileLines);
-      gameFile.readFile();
-
-      // create map 
-      Map map = new Map(gameFile.getMapLines());
-
-      // load player from gamefile
-      this.player.load(gameFile.getPlayerLine(), map);
-      this.player.resetAttributes();
-      this.player.restoreHealth();
-
-      // ready to load entities
-      ArrayList<Entity> entities = new ArrayList<Entity>();
-
-      // load monsters from gamefile 
-      for (String monsterLine : gameFile.getMonsterLines()) {
-        entities.add(new Monster(monsterLine, map));
-      }
-
-      // load items from gamefile
-      for (String itemLine : gameFile.getItemLines()) {
-        entities.add(new Item(itemLine, map));
-      }
-
-      // create and start a new world 
-      this.startWorld(map, this.player, entities, true, false);
-
-    } catch (GameLevelNotFoundException | NullPointerException e) {
-      System.out.println(GameEngine.MAP_NOT_FOUND_ERROR);
+      file = new FileIO(String.format("%s.dat", filename));
+      fileLines = file.readContentsAsArray();
     } catch (FileIOException e) {
-      System.out.println(GameEngine.IO_LOAD_ERROR);
-    } catch (Exception e) {
-      System.out.println(GameEngine.GEN_ERROR_MSG);
+      throw new GameLevelNotFoundException();
     }
+
+    GameFile gameFile = new GameFile(fileLines);
+    gameFile.readFile();
+
+    // create map 
+    Map map = new Map(gameFile.getMapLines());
+
+    // load player from gamefile
+    this.player.load(gameFile.getPlayerLine(), map);
+    this.player.resetAttributes();
+    this.player.restoreHealth();
+
+    // ready to load entities
+    ArrayList<Entity> entities = new ArrayList<Entity>();
+
+    // load monsters from gamefile 
+    for (String monsterLine : gameFile.getMonsterLines()) {
+      entities.add(new Monster(monsterLine, map));
+    }
+
+    // load items from gamefile
+    for (String itemLine : gameFile.getItemLines()) {
+      entities.add(new Item(itemLine, map));
+    }
+
+    // create and start a new world 
+    this.startWorld(map, this.player, entities, true, false);
   }
 
   /**
