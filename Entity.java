@@ -1,3 +1,8 @@
+/**
+ * An entity that belongs to the world 
+ * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
+ *
+ */
 public abstract class Entity {
 
   private int posX;
