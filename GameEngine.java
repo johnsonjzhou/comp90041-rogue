@@ -276,7 +276,7 @@ public class GameEngine {
         return;
       }
       System.out.println(GameEngine.PLAYER_LOAD_ERROR);
-    } catch (FileIOException | GameLevelNotFoundException e) {
+    } catch (FileIOException e) {
       System.out.println(GameEngine.IO_LOAD_ERROR);
     }
   }
