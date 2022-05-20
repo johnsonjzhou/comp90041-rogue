@@ -42,21 +42,21 @@ public class FileIO {
 
   /**
    * Starts a scanner instance for file reading 
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  private void startReader() throws GameLevelNotFoundException {
+  private void startReader() throws FileIOException {
     try {
       this.reader = new Scanner(new FileInputStream(file));
     } catch (FileNotFoundException | SecurityException e) {
-      throw new GameLevelNotFoundException("Could not open file for reading");
+      throw new FileIOException("Could not open file for reading");
     }
   }
 
   /**
    * Checks if scanner instance has been started and starts one 
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  private void checkAndLoadReader() throws GameLevelNotFoundException {
+  private void checkAndLoadReader() throws FileIOException {
     if (!(this.reader instanceof Scanner)) {
       this.startReader();
     }
@@ -72,45 +72,45 @@ public class FileIO {
 
   /**
    * @return  whether there is another token to read from the file
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  public boolean canReadNext() throws GameLevelNotFoundException {
+  public boolean canReadNext() throws FileIOException {
     this.checkAndLoadReader();
     return this.reader instanceof Scanner ? this.reader.hasNext() : false;
   }
 
   /**
    * @return  next token read from the file as String
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  public String readNext() throws GameLevelNotFoundException {
+  public String readNext() throws FileIOException {
     this.checkAndLoadReader();
     return this.canReadNext() ? this.reader.next() : "";
   }
 
   /**
    * @return  whether this is another line to read from the file 
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  public boolean canReadNextLine() throws GameLevelNotFoundException {
+  public boolean canReadNextLine() throws FileIOException {
     this.checkAndLoadReader();
     return this.reader.hasNextLine();
   }
 
   /**
    * @return  the remainder of the current line as String 
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  public String readNextLine() throws GameLevelNotFoundException {
+  public String readNextLine() throws FileIOException {
     this.checkAndLoadReader();
     return this.canReadNextLine() ? this.reader.nextLine() : "";
   }
 
   /**
    * @return  the entire file contents as an ArrayList of Strings 
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  public ArrayList<String> readContentsAsArray() throws GameLevelNotFoundException {
+  public ArrayList<String> readContentsAsArray() throws FileIOException {
     this.resetReader();
     ArrayList<String> contents = new ArrayList<String>();
     while (this.canReadNextLine()) {
@@ -130,9 +130,9 @@ public class FileIO {
 
   /**
    * Close and restarts the Scanner instance for file reading 
-   * @throws  GameLevelNotFoundException  if file could not be opened with FileInputStream 
+   * @throws  FileIOException  if file could not be opened with FileInputStream 
    */
-  public void resetReader() throws GameLevelNotFoundException {
+  public void resetReader() throws FileIOException {
     this.closeReader();
     this.startReader();
   }
