@@ -2,7 +2,9 @@
  * Exception relating to loading of the game level 
  * @author  Johnson Zhou 1302442 <zhoujj@student.unimelb.edu.au>
  */
-public class GameLevelNotFoundException extends Exception {
+import java.io.IOException;
+
+public class GameLevelNotFoundException extends IOException {
 
   public static final String GEN_MESSAGE = "Map not found.";
 
