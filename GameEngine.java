@@ -276,7 +276,7 @@ public class GameEngine {
         return;
       }
       System.out.println(GameEngine.PLAYER_LOAD_ERROR);
-    } catch (IOExceptions | GameLevelNotFoundException e) {
+    } catch (FileIOException | GameLevelNotFoundException e) {
       System.out.println(GameEngine.IO_LOAD_ERROR);
     }
   }
@@ -301,7 +301,7 @@ public class GameEngine {
       FileIO file = new FileIO("player.dat");
       file.setWritable().overwrite(playerData);
       System.out.println(GameEngine.PLAYER_SAVED_MSG);
-    } catch (IOExceptions e) {
+    } catch (FileIOException e) {
       System.out.println(GameEngine.IO_SAVE_ERROR);
     }
   }
@@ -358,7 +358,7 @@ public class GameEngine {
       // Monsters will move in A1 mode as per Ed post #274
       // https://edstem.org/au/courses/7656/discussion/847157
       this.startWorld(map, this.player, entities, true, true);
-    } catch (IOExceptions e) {
+    } catch (FileIOException e) {
       // actually should not error here 
       System.out.println(e.getCause());
     }
@@ -403,7 +403,7 @@ public class GameEngine {
 
     } catch (GameLevelNotFoundException | NullPointerException e) {
       System.out.println(GameEngine.MAP_NOT_FOUND_ERROR);
-    } catch (IOExceptions e) {
+    } catch (FileIOException e) {
       System.out.println(GameEngine.IO_LOAD_ERROR);
     } catch (Exception e) {
       System.out.println(GameEngine.GEN_ERROR_MSG);

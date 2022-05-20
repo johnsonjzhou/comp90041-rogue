@@ -48,9 +48,9 @@ public class Item extends Entity {
    * Short cut constructor at also invokes the <code>load</code> method. 
    * @param  loadString  matching format <code>item x y symbol</code> 
    * @param  map  the world map 
-   * @throws  IOExceptions  if loadString does not contain valid data 
+   * @throws  FileIOException  if loadString does not contain valid data 
    */
-  public Item(String loadString, Map map) throws IOExceptions {
+  public Item(String loadString, Map map) throws FileIOException {
     this.load(loadString, map);
   }
 
@@ -58,19 +58,19 @@ public class Item extends Entity {
    * Loads Item map information from a string of text 
    * @param  loadString  matching format <code>item x y symbol</code> 
    * @param  map  the world map 
-   * @throws  IOExceptions  if loadString does not contain valid data 
+   * @throws  FileIOException  if loadString does not contain valid data 
    */
-  public void load(String loadString, Map map) throws IOExceptions {
+  public void load(String loadString, Map map) throws FileIOException {
     String[] loaded = loadString.split(" ");
 
     // validate string elements
     if (loaded.length != 4) {
-      throw new IOExceptions("Unexpected length of item load string");
+      throw new FileIOException("Unexpected length of item load string");
     }
 
     // validate string identifier 
     if (!loaded[0].equals("item")) {
-      throw new IOExceptions("'item' identifier expected in loadString");
+      throw new FileIOException("'item' identifier expected in loadString");
     }
 
     // parse item coordinates 
@@ -80,12 +80,12 @@ public class Item extends Entity {
       x = Integer.parseInt(loaded[1]);
       y = Integer.parseInt(loaded[2]);
     } catch (NumberFormatException e) {
-      throw new IOExceptions("Could not parse item coordinates");
+      throw new FileIOException("Could not parse item coordinates");
     }
 
     // set item coordinates 
     if (!map.traversable(x, y) || x < 0 || y < 0) {
-      throw new IOExceptions("Non-traversable item coordinates");
+      throw new FileIOException("Non-traversable item coordinates");
     }
 
     this.setX(x);
@@ -98,7 +98,7 @@ public class Item extends Entity {
         return;
       }
     }
-    throw new IOExceptions("Item symbol is not of known type");
+    throw new FileIOException("Item symbol is not of known type");
   }
 
   /**

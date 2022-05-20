@@ -21,14 +21,14 @@ public class Map {
   /**
    * @param  blueprint  the map scaffold as loaded from file 
    */
-  public Map(ArrayList<String> blueprint) throws IOExceptions {
+  public Map(ArrayList<String> blueprint) throws FileIOException {
     this.parseMap(blueprint);
   }
 
   /**
    * Builds and loads a default map as per V1 specifications 
    */
-  public Map() throws IOExceptions {
+  public Map() throws FileIOException {
     ArrayList<String> blueprint = new ArrayList<String>();
     blueprint.add(String.format("%d %d", 
       Map.DEFAULT_WIDTH, Map.DEFAULT_HEIGHT
@@ -41,13 +41,13 @@ public class Map {
 
   /**
    * Parses and validates the map blueprint 
-   * @throws  IOExceptions  if blueprint does not match expected. 
+   * @throws  FileIOException  if blueprint does not match expected. 
    *                        use <code>error.getCause</code> for more details. 
    */
-  private void parseMap(ArrayList<String> blueprint) throws IOExceptions {
+  private void parseMap(ArrayList<String> blueprint) throws FileIOException {
 
     if (blueprint.size() < 1) {
-      throw new IOExceptions("Map blueprint is empty");
+      throw new FileIOException("Map blueprint is empty");
     }
 
     // first line of blueprint is dimensions
@@ -55,7 +55,7 @@ public class Map {
     
     // validate 
     if (dimensions.length != 2) {
-      throw new IOExceptions("Could not validate map dimensions");
+      throw new FileIOException("Could not validate map dimensions");
     }
 
     // init map dimensions 
@@ -64,12 +64,12 @@ public class Map {
       this.mapHeight = Integer.parseInt(dimensions[1]);
       this.map = new char[this.mapHeight][this.mapWidth];
     } catch (NumberFormatException e) {
-      throw new IOExceptions("Could not interpret map dimensions");
+      throw new FileIOException("Could not interpret map dimensions");
     }
 
     // load and validate the map 
     if (blueprint.size() != this.mapHeight) {
-      throw new IOExceptions( 
+      throw new FileIOException( 
         String.format("Map height mismatch expected %d given %d", 
           this.mapHeight, blueprint.size()
         )
@@ -80,7 +80,7 @@ public class Map {
       char[] mapRow = blueprint.get(i).toCharArray();
       
       if (mapRow.length != this.mapWidth) {
-        throw new IOExceptions(
+        throw new FileIOException(
           String.format("Map width mismatch at row %d, expected %d given %d", 
             i, this.mapWidth, mapRow.length
           )
@@ -98,7 +98,7 @@ public class Map {
           //! unsure whether to check for map char constraint, decided not to
           // @see https://edstem.org/au/courses/7656/discussion/827871?comment=1929362
           // default: 
-          //   throw new IOExceptions(
+          //   throw new FileIOException(
           //     String.format("Unsupported map char %c at [%d][%d]", 
           //       mapRow[j], i, j
           //     )

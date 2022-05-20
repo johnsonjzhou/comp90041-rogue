@@ -75,14 +75,14 @@ public class Player extends GameCharacter {
   /**
    * Loads Player attribute information from a string of text
    * @param  loadString  matching format <code>name level</code>
-   * @throws  IOExceptions  if loadString does not contain valid data 
+   * @throws  FileIOException  if loadString does not contain valid data 
    */
-  public void load(String loadString) throws IOExceptions {
+  public void load(String loadString) throws FileIOException {
     String[] loaded = loadString.split(" ");
 
     // validate string elements
     if (loaded.length != 2) {
-      throw new IOExceptions("Unexpected length of player load string");
+      throw new FileIOException("Unexpected length of player load string");
     }
 
     // parse and set player level 
@@ -90,7 +90,7 @@ public class Player extends GameCharacter {
       int level = Integer.parseInt(loaded[1]);
       this.setLevel(level);
     } catch (NumberFormatException e) {
-      throw new IOExceptions("Could not parse player level");
+      throw new FileIOException("Could not parse player level");
     }
 
     // set the name and apply calculated attributes 
@@ -101,19 +101,19 @@ public class Player extends GameCharacter {
    * Loads Player map information from a string of text 
    * @param  loadString  matching format <code>player x y</code> 
    * @param  map  the world map 
-   * @throws  IOExceptions  if loadString does not contain valid data 
+   * @throws  FileIOException  if loadString does not contain valid data 
    */
-  public void load(String loadString, Map map) throws IOExceptions {
+  public void load(String loadString, Map map) throws FileIOException {
     String[] loaded = loadString.split(" ");
 
     // validate string elements
     if (loaded.length != 3) {
-      throw new IOExceptions("Unexpected length of player load string");
+      throw new FileIOException("Unexpected length of player load string");
     }
 
     // validate string identifier 
     if (!loaded[0].equals("player")) {
-      throw new IOExceptions("'player' identifier expected in loadString");
+      throw new FileIOException("'player' identifier expected in loadString");
     }
 
     // parse player coordinates 
@@ -123,12 +123,12 @@ public class Player extends GameCharacter {
       x = Integer.parseInt(loaded[1]);
       y = Integer.parseInt(loaded[2]);
     } catch (NumberFormatException e) {
-      throw new IOExceptions("Could not parse player coordinates");
+      throw new FileIOException("Could not parse player coordinates");
     }
 
     // set player coordinates 
     if (!map.traversable(x, y) || x < 0 || y < 0) {
-      throw new IOExceptions("Non-traversable player coordinates");
+      throw new FileIOException("Non-traversable player coordinates");
     }
 
     this.setX(x);

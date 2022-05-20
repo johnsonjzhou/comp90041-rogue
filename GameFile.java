@@ -27,9 +27,9 @@ class GameFile {
   
   /**
    * Read file lines and parse map, player, monster and item information 
-   * @throws  IOExceptions  if file information is unexpected 
+   * @throws  FileIOException  if file information is unexpected 
    */
-  public void readFile() throws IOExceptions {
+  public void readFile() throws FileIOException {
     boolean playerLoaded = false;
     boolean monsterLoaded = false;
     boolean itemLoaded = false;
@@ -42,7 +42,7 @@ class GameFile {
         try {
           mapRows = Integer.parseInt(this.fileLines.get(0).split(" ")[1]);
         } catch (Exception e) {
-          throw new IOExceptions("Could not parse file map dimensions");
+          throw new FileIOException("Could not parse file map dimensions");
         }
       }
 
@@ -56,7 +56,7 @@ class GameFile {
       // extract player
       if (lineContents.startsWith("player")) {
         if (monsterLoaded || itemLoaded) {
-          throw new IOExceptions("Player data out of order in file");
+          throw new FileIOException("Player data out of order in file");
         }
         this.playerLine = lineContents;
         playerLoaded = true;
@@ -65,7 +65,7 @@ class GameFile {
       // extract monsters
       if (lineContents.startsWith("monster")) {
         if (!playerLoaded || itemLoaded) {
-          throw new IOExceptions("Monster data out of order in file");
+          throw new FileIOException("Monster data out of order in file");
         }
         this.monsterLines.add(lineContents);
         monsterLoaded = true;
@@ -74,7 +74,7 @@ class GameFile {
       // extract items
       if (lineContents.startsWith("item")) {
         if (!playerLoaded && !monsterLoaded) {
-          throw new IOExceptions("Item data out of order in file");
+          throw new FileIOException("Item data out of order in file");
         }
         this.itemLines.add(lineContents);
         itemLoaded = true;

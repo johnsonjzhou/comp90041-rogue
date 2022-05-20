@@ -142,18 +142,18 @@ public class FileIO {
   /**
    * Opens a file for writing
    * @param  append  append to the file rather than overwriting it 
-   * @throws  IOExceptions  if read only operation is specified 
-   * @throws  IOExceptions  if file could not be opened with FileOutputStream 
+   * @throws  FileIOException  if read only operation is specified 
+   * @throws  FileIOException  if file could not be opened with FileOutputStream 
    */
-  private PrintWriter openWritableFile(boolean append) throws IOExceptions {
+  private PrintWriter openWritableFile(boolean append) throws FileIOException {
     if (this.readonly) {
-      throw new IOExceptions("File operation in readonly mode");
+      throw new FileIOException("File operation in readonly mode");
     }
 
     try {
       return new PrintWriter(new FileOutputStream(file, append));
     } catch (FileNotFoundException | SecurityException e) {
-      throw new IOExceptions("Could not open file for writing");
+      throw new FileIOException("Could not open file for writing");
     }
   }
 
@@ -169,9 +169,9 @@ public class FileIO {
   /**
    * Writes to the file by replacing its current contents 
    * @param  text  the string text to write to the file 
-   * @throws  IOExceptions  if file could not be opened with FileOutputStream 
+   * @throws  FileIOException  if file could not be opened with FileOutputStream 
    */
-  public void overwrite(String text) throws IOExceptions {
+  public void overwrite(String text) throws FileIOException {
     PrintWriter file = this.openWritableFile(false);
     file.println(text);
     file.close();
@@ -180,9 +180,9 @@ public class FileIO {
   /**
    * Appends one line of string text to the file 
    * @param  text  the string text to write to the file 
-   * @throws  IOExceptions  if file could not be opened with FileOutputStream 
+   * @throws  FileIOException  if file could not be opened with FileOutputStream 
    */
-  public void writeLine(String text) throws IOExceptions {
+  public void writeLine(String text) throws FileIOException {
     PrintWriter file = this.openWritableFile(true);
     file.println(text);
     file.close();

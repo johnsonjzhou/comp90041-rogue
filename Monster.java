@@ -24,9 +24,9 @@ public class Monster extends GameCharacter {
    * @param  loadString  matching format 
    *                     <code>monster x y monsterName health attack</code> 
    * @param  map  the world map 
-   * @throws  IOExceptions  if loadString does not contain valid data 
+   * @throws  FileIOException  if loadString does not contain valid data 
    */
-  public Monster(String loadString, Map map) throws IOExceptions {
+  public Monster(String loadString, Map map) throws FileIOException {
     // init GameCharacter
     super();
 
@@ -40,19 +40,19 @@ public class Monster extends GameCharacter {
    * @param  loadString  matching format 
    *                     <code>monster x y monsterName health attack</code> 
    * @param  map  the world map 
-   * @throws  IOExceptions  if loadString does not contain valid data 
+   * @throws  FileIOException  if loadString does not contain valid data 
    */
-  public void load(String loadString, Map map) throws IOExceptions {
+  public void load(String loadString, Map map) throws FileIOException {
     String[] loaded = loadString.split(" ");
 
     // validate load string length 
     if (loaded.length != 6) {
-      throw new IOExceptions("Unexpected length of monster load string");
+      throw new FileIOException("Unexpected length of monster load string");
     }
 
     // validate string identifier 
     if (!loaded[0].equals("monster")) {
-      throw new IOExceptions("'monster' identifier expected in loadString");
+      throw new FileIOException("'monster' identifier expected in loadString");
     }
 
     // parse monster coordinates 
@@ -62,12 +62,12 @@ public class Monster extends GameCharacter {
       x = Integer.parseInt(loaded[1]);
       y = Integer.parseInt(loaded[2]);
     } catch (NumberFormatException e) {
-      throw new IOExceptions("Could not parse monster coordinates");
+      throw new FileIOException("Could not parse monster coordinates");
     }
 
     // set monster coordinates 
     if (!map.traversable(x, y) || x < 0 || y < 0) {
-      throw new IOExceptions("Non-traversable monster coordinates");
+      throw new FileIOException("Non-traversable monster coordinates");
     }
 
     this.setX(x);
@@ -80,7 +80,7 @@ public class Monster extends GameCharacter {
       int damage = Integer.parseInt(loaded[5]);
       this.create(name, maxHealth, damage, true);
     } catch (NumberFormatException e) {
-      throw new IOExceptions("Could not parse monster attributes");
+      throw new FileIOException("Could not parse monster attributes");
     }
   }
 
